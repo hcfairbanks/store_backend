@@ -9,9 +9,10 @@ router.get('/', (req, res, next) => {
 });
 
 router.get("/users", users.findAll);
-router.get("/cars", cars.findAll);
+//  router.get("/cars", cars.findAll);
 router.post("/cars", cars.create);
 
+// Create authentication and authorization middle wear based on this
 const requireJsonContent = () => {
   return (req, res, next) => {
    if (req.headers['content-type'] !== 'application/json') {
@@ -26,6 +27,10 @@ const requireJsonContent = () => {
 
 router.get("/testMiddleWear", requireJsonContent(), (req, res, next) =>{
   res.send('You sent JSON');
+});
+
+router.get("/cars", requireJsonContent(), (req, res, next) =>{
+  cars.findAll(req, res);
 });
 
 export default router;
