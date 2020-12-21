@@ -16,6 +16,7 @@ router.patch("/users", users.update);
 router.get("/users/:id", users.findByPk);
 router.post("/login", users.login);
 
+router.post("/verify_token", users.verifyToken)
 
 router.delete("/users/:id", users.delete);
 //  router.get("/cars", cars.findAll);

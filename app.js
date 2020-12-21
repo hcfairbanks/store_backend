@@ -14,6 +14,17 @@ app.use('/', router);
 
 const db = require("./models");
 
+const dotenv = require("dotenv");
+
+// get config vars
+dotenv.config();
+
+// access config var
+process.env.TOKEN_SECRET;
+
+
+
+
 // db.sequelize.sync();
 
 // db.sequelize.sync({ force: true }).then(() => {

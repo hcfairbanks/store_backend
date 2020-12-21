@@ -1,6 +1,7 @@
 const db = require("../models");
 const User = db.user;
 const Op = db.Sequelize.Op;
+const jwt = require("jsonwebtoken");
 
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -18,6 +19,16 @@ exports.findAll = (req, res) => {
       });
     });
 };
+
+// username is in the form { username: "my cool username" }
+// ^^the above object structure is completely arbitrary
+function generateAccessToken(email) {
+  // expires after half and hour (1800 seconds = 30 minutes)
+  //return jwt.sign(username, process.env.TOKEN_SECRET, { "expiresIn": 1000 });
+  return jwt.sign({
+    email: email
+  }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
+}
 
 exports.create =(req,res) => {
   bcrypt.hash(req.body["password"], saltRounds, function (err, hash) {
@@ -48,7 +59,10 @@ exports.login = (req, res) =>{
    } else {
 bcrypt.compare(req.body.password, user.password, function (err, result) {
   if (result == true) {
-    res.status(200).json({message: 'Success',result: result});  
+    //const jwt = generateAccessToken(req.body["email"])
+    //res.send({jwt: jwt})
+
+    res.status(200).json({message: 'Success',result: result,jwt: generateAccessToken(req.body["email"])});  
     //res.redirect('/home');
   } else {
    // res.send('Incorrect password');
@@ -64,6 +78,18 @@ bcrypt.compare(req.body.password, user.password, function (err, result) {
 }
 
 exports.findOne = (req, res) => {
+};
+
+// Turn this into middleware at the route level
+exports.verifyToken = (req, res) => {
+
+  console.log(req.headers.bearer)
+  
+  //verify a token symmetric - synchronous
+  var decoded = jwt.verify(req.headers.bearer, process.env.TOKEN_SECRET);
+  //console.log(decoded.foo) // bar
+  res.send(decoded)
+
 };
 
 exports.findOne = (req, res) => {
