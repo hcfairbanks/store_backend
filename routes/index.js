@@ -9,6 +9,15 @@ router.get('/', (req, res, next) => {
 });
 
 router.get("/users", users.findAll);
+router.post("/users", users.create);
+// https://rapidapi.com/blog/put-vs-patch/
+router.patch("/users", users.update);
+
+router.get("/users/:id", users.findByPk);
+router.post("/login", users.login);
+
+
+router.delete("/users/:id", users.delete);
 //  router.get("/cars", cars.findAll);
 router.post("/cars", cars.create);
 
