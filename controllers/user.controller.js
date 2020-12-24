@@ -80,18 +80,6 @@ bcrypt.compare(req.body.password, user.password, function (err, result) {
 exports.findOne = (req, res) => {
 };
 
-// Turn this into middleware at the route level
-exports.verifyToken = (req, res) => {
-
-  console.log(req.headers.bearer)
-  
-  //verify a token symmetric - synchronous
-  var decoded = jwt.verify(req.headers.bearer, process.env.TOKEN_SECRET);
-  //console.log(decoded.foo) // bar
-  res.send(decoded)
-
-};
-
 exports.findOne = (req, res) => {
   // const user = await User.findByPk(req.params.id);
   // if (user === null) {

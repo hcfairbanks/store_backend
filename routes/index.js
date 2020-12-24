@@ -1,6 +1,7 @@
 import express from 'express';
 import cars from '../controllers/car.controller.js';
 import users from '../controllers/user.controller.js';
+import jwt from 'jsonwebtoken';
 
 let router = express.Router();
 
@@ -15,8 +16,6 @@ router.patch("/users", users.update);
 
 router.get("/users/:id", users.findByPk);
 router.post("/login", users.login);
-
-router.post("/verify_token", users.verifyToken)
 
 router.delete("/users/:id", users.delete);
 //  router.get("/cars", cars.findAll);
@@ -35,12 +34,34 @@ const requireJsonContent = () => {
   }
 }
 
-router.get("/testMiddleWear", requireJsonContent(), (req, res, next) =>{
-  res.send('You sent JSON');
+// Maybe move this to a helper/controller or some other file?
+const verifyToken = () => {
+
+  // "email": "200hcfairbanks@gmail.com",
+  // "iat": 1608770055,
+  // "exp": 1608773655
+
+  return (req, res, next) => {
+     try {
+      jwt.verify(req.headers.bearer, process.env.TOKEN_SECRET);
+      next()
+    } catch(err) {
+      res.status(403).json({message: 'Access Denied', error: err });
+    }
+  }
+}
+
+router.post("/verify_token", verifyToken(),(req, res, next) =>{
+  res.send('Token Verified');
 });
 
-router.get("/cars", requireJsonContent(), (req, res, next) =>{
+router.get("/cars", verifyToken(),(req, res, next) =>{
   cars.findAll(req, res);
+});
+
+
+router.get("/testMiddleWear", requireJsonContent(), (req, res, next) =>{
+  res.send('You sent JSON');
 });
 
 export default router;
