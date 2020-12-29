@@ -8,7 +8,10 @@ module.exports = (dbConnection, Sequelize) => {
             unique: true
           },
     password: { type: Sequelize.STRING,
-                allowNull: false}
+                allowNull: false},
+    RoleId: { type: Sequelize.INTEGER,
+              references: { model: 'Roles', key: 'id' },
+              allowNull: false}
   });
 
   return user;

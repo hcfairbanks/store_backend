@@ -19,6 +19,13 @@ db.dbConnection = dbConnection;
 
 db.car = require("./car.model")(dbConnection, Sequelize);
 db.user = require("./user.model")(dbConnection, Sequelize);
+db.role = require("./role.model")(dbConnection, Sequelize);
+
+
+// TODO HERE not sure if this is actually doing something
+db.user.belongsTo(db.role);
+db.role.hasMany(db.user);
+
 
 module.exports = db;
 
