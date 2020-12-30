@@ -24,19 +24,19 @@ let basicUsers = {
     "firstName": "admin",
     "lastName": "admin",
     "email": "admin@test.com",
-    "password": "password123admin"
+    "password": "pa55w0rd"
   },
   "clerk" :{
     "firstName": "clerk",
     "lastName": "clerk",
     "email": "clerk@test.com",
-    "password": "password123clerk"
+    "password": "pa55w0rd"
   },
   "customer":{
     "firstName": "customer",
     "lastName": "customer",
     "email": "customer@test.com",
-    "password": "password123customer"
+    "password": "pa55w0rd"
   }
 }
 

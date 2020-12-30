@@ -24,10 +24,9 @@ exports.findAll = (req, res) => {
 // username is in the form { username: "my cool username" }
 // ^^the above object structure is completely arbitrary
 function generateAccessToken(user) {
-  console.log("**************");
   // The uppercase seems weird here but the only way I could get squeezle to
   // find the Role on the show was to include it like this
-  console.log(user.Role.name);
+  // console.log(user.Role.name);
   
   //TODO START HERE, need this relationship working
   //console.log(user.role)
@@ -58,36 +57,22 @@ exports.create =(req,res) => {
 }
 
 exports.login = (req, res) =>{
-//  const user = await User.findByPk(req.params.id)
   User.findOne({
-    include: [
-      {
-    model: Role}],
-    where: {
-        email: req.body.email
-           }
-}).then(function (user) {
-   if (!user) {
+    include: [ {model: Role} ],
+    where: {email: req.body.email}
+  }).then(function (user) {
+    if (!user) {
       res.redirect('/');
-   } else {
-bcrypt.compare(req.body.password, user.password, function (err, result) {
-  if (result == true) {
-    //const jwt = generateAccessToken(req.body["email"])
-    //res.send({jwt: jwt})
-
-    res.status(200).json({message: 'Success',result: result,jwt: generateAccessToken(user)});  
-    //res.redirect('/home');
-  } else {
-   // res.send('Incorrect password');
-   // res.redirect('/');
-   res.status(403).json({message: 'Access Denied'});
-  }
-});
-}
-
-});
-
-
+    } else {
+      bcrypt.compare(req.body.password, user.password, function (err, result) {
+        if (result == true) {
+          res.status(200).json({message: 'Success',result: result,jwt: generateAccessToken(user)});  
+        } else {
+         res.status(403).json({message: 'Access Denied'});
+        }
+      });
+    }
+  });
 }
 
 exports.findOne = (req, res) => {
