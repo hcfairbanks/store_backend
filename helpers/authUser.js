@@ -11,7 +11,8 @@ const authUser = (accessReq) => {
       const decoded = jwt.verify(req.headers.bearer, process.env.TOKEN_SECRET);
       const userRole = rolePermissions[decoded.role]
 
-      if (userRole[accessReq[0]] && userRole[accessReq[0]].includes(accessReq[1])){
+      // TODO This condition is a bit long
+      if (decoded.role == "admin" || (userRole[accessReq[0]] && userRole[accessReq[0]].includes(accessReq[1]))){
         // console.log("I am in :) ")
         next();
       }
@@ -21,7 +22,7 @@ const authUser = (accessReq) => {
       }
       
    } catch(err) {
-     res.status(403).json({message: 'Access Denied here', error: err });
+     res.status(403).json({message: 'Access Denied', error: err });
    }
  }
 }

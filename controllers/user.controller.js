@@ -75,9 +75,7 @@ exports.login = (req, res) =>{
   });
 }
 
-exports.findOne = (req, res) => {
-};
-
+// Change this into a search by parameters
 exports.findOne = (req, res) => {
   // const user = await User.findByPk(req.params.id);
   // if (user === null) {
@@ -147,8 +145,4 @@ exports.delete = (req, res) => {
   }).catch(error => {
     console.log(error)
   })
-};
-
-exports.deleteAll = (req, res) => {
-  
 };

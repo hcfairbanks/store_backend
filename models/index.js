@@ -17,14 +17,17 @@ const db = {};
 db.Sequelize = Sequelize;
 db.dbConnection = dbConnection;
 
-db.car = require("./car.model")(dbConnection, Sequelize);
+db.item = require("./item.model")(dbConnection, Sequelize);
+db.category = require("./category.model")(dbConnection, Sequelize);
 db.user = require("./user.model")(dbConnection, Sequelize);
 db.role = require("./role.model")(dbConnection, Sequelize);
 
 
-// TODO HERE not sure if this is actually doing something
+// TODO Not sure if this is actually doing something
 db.user.belongsTo(db.role);
 db.role.hasMany(db.user);
+db.item.belongsTo(db.category);
+db.category.hasMany(db.item);
 
 
 module.exports = db;

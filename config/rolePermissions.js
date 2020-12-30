@@ -1,7 +1,70 @@
 const rolePermissions = {
-  "admin": { "cars":["index","show","create","update"]},
-  "clerk": { "cars":["index","show","create","update"]},
-  "customer": { "cars":["index","show"]}
+  "admin": {
+              "categories": [
+                              "index",
+                              "show",
+                              "create",
+                              "update",
+                              "delete"
+                            ],
+              "items": [
+                          "index",
+                          "show",
+                          "create",
+                          "update",
+                          "delete"
+                       ],
+              "users": [ 
+                         "index",
+                         "show",
+                         "create",
+                         "update",
+                         "delete"
+                       ],
+              "roles": [
+                        "index",
+                        "show",
+                        "create",
+                        "update",
+                        "delete"
+                       ],
+            },
+  "clerk": {
+              "categories": [
+                              "index",
+                              "show",
+                              "create",
+                              "update",
+                              "delete"
+                            ],
+              "items": [
+                          "index",
+                          "show",
+                          "create",
+                          "update",
+                          "delete"
+                       ],
+              "users": [
+                          "index",
+                          "show",
+                          "create",
+                          "update",
+                          "delete"
+                       ],
+              "roles": [
+                          "index",
+                          "show",
+                          "create",
+                          "update",
+                          "delete"
+                       ],
+            },
+  "customer": { 
+                 "items": [
+                             "index",
+                             "show"
+                          ]
+              }
 };
 
 export default rolePermissions
@@ -9,7 +72,7 @@ export default rolePermissions
 // this could also be done like this
 
 // export default {
-//   "admin": { "cars":["index","show","create","update"]},
-//   "clerk": { "cars":["index","show","create","update"]},
-//   "customer": { "cars":["index","show"]}
+//   "admin": { "items":["index","show","create","update"]},
+//   "clerk": { "items":["index","show","create","update"]},
+//   "customer": { "items":["index","show"]}
 // };
