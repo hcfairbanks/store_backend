@@ -6,10 +6,43 @@ import users from '../controllers/user.controller.js';
 import { authUser } from '../helpers/authUser.js'
 //  import authUser from '../helpers/authUser.js'
 
+// import { LocaleService } from './services/localeService.mjs';
+// import i18n from './i18n.config.mjs';
+// const localeService = new LocaleService(i18n);
+
+const path = require('path')
+const { I18n } = require('i18n')
+
+const i18n = new I18n({
+  locales: ['en', 'el'],
+  header: 'myLanguage',
+  //  queryParameter: 'lang',
+  //  defaultLocale: 'el',
+  directory: path.join(__dirname, '../locales')
+})
+
+
+// console.log(localeService.getLocales()); // ['en', 'el']
+// console.log(localeService.getCurrentLocale()); // 'en'
+// console.log(localeService.translate('Hello')); //  'Hello'
+// console.log(localeService.translatePlurals('You have %s message', 3)); // 'You have 3 messages
+
 let router = express.Router();
 
-router.get('/', (req, res, next) => {
-  res.json({greeting: "This is the Home page"});
+const setLangage = () => {
+  return (req, res, next) => {
+    i18n.setLocale(req.headers.mylanguage)
+    next()
+  }
+}
+
+router.get('/', setLangage(), (req, res, next) => {
+  //  Create middle wear that checks for this and sets the language.
+  //  Middle wear will need to be a helper that gets accessed throgh 
+  //  each controller so the text the controller returns is appropriate.
+  //  This expects this header myLanguage with a language value like en
+  console.log(req.headers.mylanguage)
+  res.json({greeting: i18n.__('Hello')});
 });
 
 router.post("/login", users.login);

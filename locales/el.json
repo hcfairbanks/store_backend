@@ -1,0 +1,14 @@
+{
+  "success": "Success EL",
+  "failed": "Updating Data Failed. EL",
+  "Hello": "Για Σας",
+  "You have %s message": {
+     "one": "Έχεις %s μύνημα",
+     "other": "Έχεις %s μύνηματα"
+  },
+  "IamIn": "Iam in in EL",
+  "Items": {
+    "Success": "Success EL",
+    "Failed": "Updating Data Failed. EL"
+  }
+}

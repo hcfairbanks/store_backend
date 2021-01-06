@@ -1,0 +1,63 @@
+{
+	"Hello": "Hello",
+	"You have %s message": {
+		"one": "You have %s message",
+		"other": "You have %s messages"
+	},
+	"IamIn": "Iam in in EN",
+	"%s cat": {
+		"one": "%s cat",
+		"other": "%s cats"
+	},
+	"dogs": {
+		"one": "one dog",
+		"other": "[0] no dog|[2,5] some dogs|[6,11] many dogs|[12,36] dozens of dogs|a horde of %s dogs|[100,] too many dogs"
+	},
+	"greeting": {
+		"formal": "Hello",
+		"informal": "Hi",
+		"placeholder": {
+			"formal": "Hello %s",
+			"informal": "Hi %s"
+		}
+  },
+  "items":{
+    "update_success": "Updating data successful.",
+    "update_failed": "Updating data failed.",
+    "no_item_found": "No Item found with that id.",
+    "error_retrieving_items": "Error occurred while retrieving Items.",
+    "delete_success": "Item successfully deleted",
+    "delete_fail": "Item deletion failed"
+  },
+  "categories":{
+    "update_success": "Updating data successful.",
+    "update_failed": "Updating data failed.",
+    "no_category_found": "No Category found with that id.",
+    "error_retrieving_categories": "Error occurred while retrieving Categories.",
+    "delete_success": "Category successfully deleted",
+    "delete_fail": "Category deletion failed"
+  },
+  "roles":{
+    "update_success": "Updating data successful.",
+    "update_failed": "Updating data failed.",
+    "no_role_found": "No Role found with that id.",
+    "error_retrieving_roles": "Error occurred while retrieving Roles.",
+    "delete_success": "Role successfully deleted",
+    "delete_fail": "Role deletion failed"
+  },
+  "users":{
+    "update_success": "Updating data successful.",
+    "update_failed": "Updating data failed.",
+    "no_user_found": "No User found with that id.",
+    "error_retrieving_users": "Error occurred while retrieving Users.",
+    "delete_success": "User successfully deleted",
+    "delete_fail": "User deletion failed",
+    "access_granted": "Access Granted",
+    "access_denied": "Access Denied123"
+  },
+  "authorization": {
+    "granted": "Authorization Granted",
+    "denied": "Authorization Denied"
+  }
+
+}

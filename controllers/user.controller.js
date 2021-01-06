@@ -1,13 +1,16 @@
+
+// TODO update these 'require's to 'import's
+var bcrypt = require('bcrypt');
+const jwt = require("jsonwebtoken");
 const db = require("../models");
+import { i18n } from '../helpers/setLanguage.js'
 const User = db.user;
 const Role = db.role;
-const Op = db.Sequelize.Op;
-const jwt = require("jsonwebtoken");
-
-var bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 exports.findAll = (req, res) => {
+  // TODO This breakes if the header isn't there
+  i18n.setLocale(req.headers.mylanguage)
 
   User.findAll()
     .then(data => {
@@ -16,7 +19,7 @@ exports.findAll = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving tutorials."
+          err.message || i18n.__("users.error_retrieving_users")
       });
     });
 };
@@ -36,7 +39,7 @@ function generateAccessToken(user) {
     email: user.email,
     role: user.Role.name
   }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
-}
+};
 
 exports.create =(req,res) => {
   bcrypt.hash(req.body["password"], saltRounds, function (err, hash) {
@@ -54,9 +57,12 @@ exports.create =(req,res) => {
       res.send(error.errors);
     })
   })
-}
+};
 
 exports.login = (req, res) =>{
+  // TODO This breakes if the header isn't there
+  i18n.setLocale(req.headers.mylanguage)
+
   User.findOne({
     include: [ {model: Role} ],
     where: {email: req.body.email}
@@ -66,47 +72,32 @@ exports.login = (req, res) =>{
     } else {
       bcrypt.compare(req.body.password, user.password, function (err, result) {
         if (result == true) {
-          res.status(200).json({message: 'Success',result: result,jwt: generateAccessToken(user)});  
+          res.status(200).json({message: i18n.__("users.access_granted"), result: result,jwt: generateAccessToken(user)});  
         } else {
-         res.status(403).json({message: 'Access Denied'});
+          res.status(403).json({message: i18n.__("users.access_denied")});
         }
       });
     }
   });
-}
-
-// Change this into a search by parameters
-exports.findOne = (req, res) => {
-  // const user = await User.findByPk(req.params.id);
-  // if (user === null) {
-  //   console.log('User Not found!');
-  // } else {
-  //   console.log(user instanceof User); // true
-  //   // Its primary key is 123
-  // }
-
-  // User.findByPk(req.params.id).then(data =>{
-  //   res.send(data)
-  // })
 };
 
+exports.findByPk = async (req, res) => {
+  // TODO This breakes if the header isn't there
+  i18n.setLocale(req.headers.mylanguage)
 
-exports.findByPk = (req, res) => {
-  // const user = await User.findByPk(req.params.id);
-  // if (user === null) {
-  //   console.log('User Not found!');
-  // } else {
-  //   console.log(user instanceof User); // true
-  //   // Its primary key is 123
-  // }
+  const user = await User.findByPk(req.params.id);
+  if (user == null){
+    res.send({message: i18n.__("users.no_user_found")})
+  } else {
+    res.send(user)
+  }
+};
 
-  User.findByPk(req.params.id).then(data =>{
-    res.send(data)
-  })
-}; 
-
-
+// Change this for security
+// The password in the update needs to be hashed
 exports.update = (req, res) => {
+  // TODO This breakes if the header isn't there
+  i18n.setLocale(req.headers.mylanguage)
 
   User.update({
     firstName: req.body["firstName"],
@@ -117,11 +108,10 @@ exports.update = (req, res) => {
   }, {
     where: { id: req.body["id"] }
    }).then(result => {
-    // Need to findout how to catch duplicate emails
     if ( result == 1){
-        res.status(200).json({message: 'Success',result: result});
+      res.status(200).json({message: i18n.__("users.update_success"), result: result});
     }else{
-      res.status(500).json({message: 'Updating data failed.',result: result});
+      res.status(500).json({message: i18n.__("users.update_failed"), result: result});
     }
   }).catch(error => {
     console.log(error)
@@ -129,18 +119,19 @@ exports.update = (req, res) => {
   
 };
 
-
 exports.delete = (req, res) => {
-  // https://www.codota.com/code/javascript/functions/sequelize/Model/destroy
+  // TODO This breakes if the header isn't there
+  i18n.setLocale(req.headers.mylanguage)
+
   User.destroy({
     where: {
       id: req.params.id
     }
   }).then(result => {
     if ( result == 1){
-        res.status(200).json({message: 'Success',result: result});
+      res.status(200).json({message: i18n.__("users.delete_success"), result: result});
     }else{
-      res.status(500).json({message: 'Deleting data failed.',result: result});
+      res.status(500).json({message: i18n.__("users.delete_failed"), result: result});
     }
   }).catch(error => {
     console.log(error)

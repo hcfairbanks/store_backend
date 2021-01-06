@@ -1,8 +1,10 @@
 const db = require("../models");
 const Item = db.item;
+import { i18n } from '../helpers/setLanguage.js'
 
 exports.findAll = (req, res) => {
-
+  // TODO This breakes if the header isn't there
+  i18n.setLocale(req.headers.mylanguage)  
   Item.findAll()
     .then(data => {
       res.send(data);
@@ -10,13 +12,12 @@ exports.findAll = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving tutorials."
+          err.message || i18n.__("items.error_retrieving_items")
       });
     });
 };
 
 exports.create =(req, res) => {
-  // Will need category
   Item.create({
                 name: req.body["name"],
                 description: req.body["description"],
@@ -29,21 +30,20 @@ exports.create =(req, res) => {
   })
 }
 
-exports.findByPk = (req, res) => {
-  // const user = await User.findByPk(req.params.id);
-  // if (user === null) {
-  //   console.log('User Not found!');
-  // } else {
-  //   console.log(user instanceof User); // true
-  //   // Its primary key is 123
-  // }
-
-  Item.findByPk(req.params.id).then(data =>{
-    res.send(data)
-  })
-}; 
+exports.findByPk = async (req, res) => {
+  // TODO This breakes if the header isn't there
+  i18n.setLocale(req.headers.mylanguage)
+  const item = await Item.findByPk(req.params.id);
+  if (item == null){
+    res.send({message: i18n.__("items.no_item_found")})
+  } else{
+    res.send(item)
+  }
+};
 
 exports.update = (req, res) => {
+  // TODO This breakes if the header isn't there
+  i18n.setLocale(req.headers.mylanguage)
 
   Item.update({
     name: req.body["name"],
@@ -54,11 +54,11 @@ exports.update = (req, res) => {
   }, {
     where: { id: req.body["id"] }
    }).then(result => {
-    // Need to findout how to catch duplicate emails
     if ( result == 1){
-        res.status(200).json({message: 'Success',result: result});
+      res.status(200).json({message: i18n.__("items.update_success"), result: result});
+      // res.status(200).json({message: i18n.__n('%s cat', 1),result: result});
     }else{
-      res.status(500).json({message: 'Updating Data Failed.',result: result});
+      res.status(500).json({message: i18n.__('items.update_fail'), result: result});
     }
   }).catch(error => {
     console.log(error)
@@ -67,16 +67,18 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  // https://www.codota.com/code/javascript/functions/sequelize/Model/destroy
+  // TODO This breakes if the header isn't there
+  i18n.setLocale(req.headers.mylanguage)
+  
   Item.destroy({
     where: {
       id: req.params.id
     }
   }).then(result => {
     if ( result == 1){
-        res.status(200).json({message: 'Success',result: result});
+        res.status(200).json({message: i18n.__('items.delete_success'),result: result});
     }else{
-      res.status(500).json({message: 'Deleting Data Failed.',result: result});
+      res.status(500).json({message: i18n.__('items.delete_fail'),result: result});
     }
   }).catch(error => {
     console.log(error)
