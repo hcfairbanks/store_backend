@@ -1,11 +1,14 @@
-const db = require("../models");
+//const db = require("../models");
+const db = require("../models")('en');
 const Item = db.item;
+const Category = db.category;
 import { i18n } from '../helpers/setLanguage.js'
+
 
 exports.findAll = (req, res) => {
   // TODO This breakes if the header isn't there
-  i18n.setLocale(req.headers.mylanguage)  
-  Item.findAll()
+  //i18n.setLocale(req.headers.mylanguage)  
+  Item.findAll({include: [ {model: Category} ],})
     .then(data => {
       res.send(data);
     })
@@ -13,6 +16,7 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message:
           err.message || i18n.__("items.error_retrieving_items")
+          //err.message || "Error Retrieving Items: Plain text"
       });
     });
 };

@@ -4,6 +4,7 @@ import router from './routes/index';
 var cors = require('cors')
 let app = express();
 
+
 // Allow cors for local testing
 // Uncoment this as needed
 app.use(cors())

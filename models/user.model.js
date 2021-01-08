@@ -1,18 +1,62 @@
-module.exports = (dbConnection, Sequelize) => {
+// composite unique index keys with custom messages could be an issue
+// https://github.com/sequelize/sequelize/issues/5033
+import { i18n } from '../helpers/setLanguage.js'
+const dbConfig = require("../config/db.config.js");
+const Sequelize = require("sequelize");
+
+const dbConnection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+  host: dbConfig.HOST,
+  dialect: dbConfig.dialect,
+  pool: {
+    max: dbConfig.pool.max,
+    min: dbConfig.pool.min,
+    acquire: dbConfig.pool.acquire,
+    idle: dbConfig.pool.idle
+  }
+});
+
+
+
+const Role = require("./role.model")(dbConnection, Sequelize);
+
+
+// Not sure if I can add unique translated message here or not
+
+module.exports = (dbConnection, Sequelize, lang) => {
+  i18n.setLocale(lang)
+  console.log(lang)
   const user = dbConnection.define("User", {
     firstName: {type: Sequelize.STRING},
     lastName: {type: Sequelize.STRING},
     email: {
             type: Sequelize.STRING,
             allowNull: false,
-            unique: true
+            unique: {
+              args: 'uniqueKey',
+              msg: i18n.__("users.email_must_be_unique")
+          }
           },
     password: { type: Sequelize.STRING,
-                allowNull: false},
+                allowNull: false,
+                validate: {
+                  notNull: {
+                      msg: 'La categoría debe tener un nombre.'
+                  },
+                  // This isn't working because Bcrypt is entring in something when it's null
+                  // Needs to be stopped by the controller too
+                  // Look here for pw validations => https://sequelize.org/master/manual/validations-and-constraints.html
+                  notEmpty: {
+                    args: true,
+                    msg: 'La categoría debe tener un nombre.'
+                  }
+                }
+              },
     RoleId: { type: Sequelize.INTEGER,
               references: { model: 'Roles', key: 'id' },
               allowNull: false}
   });
+
+  user.belongsTo(Role);
 
   return user;
 };

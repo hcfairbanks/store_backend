@@ -2,17 +2,53 @@
 // TODO update these 'require's to 'import's
 var bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
-const db = require("../models");
+const db = require("../models")("el");
+//require("./item.model")(dbConnection, Sequelize);
 import { i18n } from '../helpers/setLanguage.js'
 const User = db.user;
 const Role = db.role;
 const saltRounds = 10;
 
+// Maybe try something like this
+// it will require restructuring everything into functions that can have variables passed to them 
+// import { user, role} from '../models'
+
+
+import dbx from "../models"
+
+
+// TODO verify it's an admin or it's the user 
+// Something similar to this
+// import jwt from 'jsonwebtoken';
+// import rolePermissions from '../config/rolePermissions.js'
+// import { i18n } from '../helpers/setLanguage.js'
+// try {
+//   // If jwt.verify doesn't return tru then an error get thrown
+//   // and the function returns the response in the catch
+//   const decoded = jwt.verify(req.headers.bearer, process.env.TOKEN_SECRET);
+//   const userRole = rolePermissions[decoded.role]
+
+//   // TODO This condition is a bit long
+//   if (decoded.role == "admin" || (userRole[accessReq[0]] && userRole[accessReq[0]].includes(accessReq[1]))){
+//     // console.log("I am in :) ")
+//     next();
+//   }
+//   else{
+//     // console.log("I am not in. :( ")
+//     res.status(401).json({message: i18n.__("authorization.denied"), error: err });
+//   }
+// } catch(err) {
+//  res.status(403).json({message: i18n.__("authorization.denied"), error: err });
+// }
+
+
+
+
 exports.findAll = (req, res) => {
   // TODO This breakes if the header isn't there
   i18n.setLocale(req.headers.mylanguage)
 
-  User.findAll()
+  User.findAll({include: [ {model: Role} ]})
     .then(data => {
       res.send(data);
     })
@@ -42,8 +78,16 @@ function generateAccessToken(user) {
 };
 
 exports.create =(req,res) => {
+  i18n.setLocale(req.headers.mylanguage)
   bcrypt.hash(req.body["password"], saltRounds, function (err, hash) {
-    User.create({
+    // https://insights.untapt.com/webpack-import-require-and-you-3fd7f5ea93c0a
+    // https://www.geeksforgeeks.org/difference-between-node-js-require-and-es6-import-and-export/
+    //const dbx = require("../models")("el");
+    const dbx = require("../models")(req.headers.mylanguage);
+    //dbx.lang = 'en';
+    
+    const x = dbx.user;
+    x.create({
                   firstName: req.body["firstName"],
                   lastName: req.body["lastName"],
                   email: req.body["email"],
