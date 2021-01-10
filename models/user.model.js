@@ -1,6 +1,5 @@
 // composite unique index keys with custom messages could be an issue
 // https://github.com/sequelize/sequelize/issues/5033
-import { i18n } from '../helpers/setLanguage.js'
 const dbConfig = require("../config/db.config.js");
 const Sequelize = require("sequelize");
 
@@ -22,9 +21,7 @@ const Role = require("./role.model")(dbConnection, Sequelize);
 
 // Not sure if I can add unique translated message here or not
 
-module.exports = (dbConnection, Sequelize, lang) => {
-  i18n.setLocale(lang)
-  console.log(lang)
+module.exports = (dbConnection, Sequelize) => {
   const user = dbConnection.define("User", {
     firstName: {type: Sequelize.STRING},
     lastName: {type: Sequelize.STRING},
@@ -33,7 +30,7 @@ module.exports = (dbConnection, Sequelize, lang) => {
             allowNull: false,
             unique: {
               args: 'uniqueKey',
-              msg: i18n.__("users.email_must_be_unique")
+              msg: "email_must_be_unique"
           }
           },
     password: { type: Sequelize.STRING,

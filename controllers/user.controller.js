@@ -1,20 +1,21 @@
 
 // TODO update these 'require's to 'import's
-var bcrypt = require('bcrypt');
-const jwt = require("jsonwebtoken");
-const db = require("../models")("el");
-//require("./item.model")(dbConnection, Sequelize);
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 import { i18n } from '../helpers/setLanguage.js'
+import returnLanguage from '../helpers/returnLanguage'
+import { translateError } from '../helpers/sequelizeTranslate'
+
+const db = require("../models")("el");
 const User = db.user;
 const Role = db.role;
 const saltRounds = 10;
 
+
+
 // Maybe try something like this
 // it will require restructuring everything into functions that can have variables passed to them 
 // import { user, role} from '../models'
-
-
-import dbx from "../models"
 
 
 // TODO verify it's an admin or it's the user 
@@ -40,9 +41,6 @@ import dbx from "../models"
 // } catch(err) {
 //  res.status(403).json({message: i18n.__("authorization.denied"), error: err });
 // }
-
-
-
 
 exports.findAll = (req, res) => {
   // TODO This breakes if the header isn't there
@@ -78,16 +76,18 @@ function generateAccessToken(user) {
 };
 
 exports.create =(req,res) => {
-  i18n.setLocale(req.headers.mylanguage)
+  //i18n.setLocale(req.headers.mylanguage)
+  i18n.setLocale(returnLanguage(req.headers))
+  // if (!req.headers.mylanguage){
+  //   i18n.setLocale(req.headers.mylanguage)
+  // }else{
+  //   i18n.setLocale('en')
+  // }
   bcrypt.hash(req.body["password"], saltRounds, function (err, hash) {
     // https://insights.untapt.com/webpack-import-require-and-you-3fd7f5ea93c0a
     // https://www.geeksforgeeks.org/difference-between-node-js-require-and-es6-import-and-export/
-    //const dbx = require("../models")("el");
-    const dbx = require("../models")(req.headers.mylanguage);
-    //dbx.lang = 'en';
-    
-    const x = dbx.user;
-    x.create({
+    // const dbx = require("../models")("el");
+    User.create({
                   firstName: req.body["firstName"],
                   lastName: req.body["lastName"],
                   email: req.body["email"],
@@ -97,15 +97,16 @@ exports.create =(req,res) => {
     .then(data =>{
       res.send(data)
     }).catch(error => {
-      console.log(error);
-      res.send(error.errors);
+      
+      console.log(translateError(error));
+
+      res.send(i18n.__(error.errors[0].message));
     })
   })
 };
 
 exports.login = (req, res) =>{
-  // TODO This breakes if the header isn't there
-  i18n.setLocale(req.headers.mylanguage)
+  i18n.setLocale(returnLanguage(req.headers))
 
   User.findOne({
     include: [ {model: Role} ],
@@ -126,8 +127,7 @@ exports.login = (req, res) =>{
 };
 
 exports.findByPk = async (req, res) => {
-  // TODO This breakes if the header isn't there
-  i18n.setLocale(req.headers.mylanguage)
+  i18n.setLocale(returnLanguage(req.headers))
 
   const user = await User.findByPk(req.params.id);
   if (user == null){
@@ -140,8 +140,7 @@ exports.findByPk = async (req, res) => {
 // Change this for security
 // The password in the update needs to be hashed
 exports.update = (req, res) => {
-  // TODO This breakes if the header isn't there
-  i18n.setLocale(req.headers.mylanguage)
+  i18n.setLocale(returnLanguage(req.headers))
 
   User.update({
     firstName: req.body["firstName"],
@@ -164,8 +163,7 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  // TODO This breakes if the header isn't there
-  i18n.setLocale(req.headers.mylanguage)
+  i18n.setLocale(returnLanguage(req.headers))
 
   User.destroy({
     where: {

@@ -3,11 +3,12 @@ const db = require("../models")('en');
 const Item = db.item;
 const Category = db.category;
 import { i18n } from '../helpers/setLanguage.js'
-
+import returnLanguage from '../helpers/returnLanguage'
+import { translateError } from '../helpers/sequelizeTranslate'
 
 exports.findAll = (req, res) => {
-  // TODO This breakes if the header isn't there
-  //i18n.setLocale(req.headers.mylanguage)  
+  i18n.setLocale(returnLanguage(req.headers))
+
   Item.findAll({include: [ {model: Category} ],})
     .then(data => {
       res.send(data);
@@ -22,6 +23,8 @@ exports.findAll = (req, res) => {
 };
 
 exports.create =(req, res) => {
+  i18n.setLocale(returnLanguage(req.headers))
+
   Item.create({
                 name: req.body["name"],
                 description: req.body["description"],
@@ -35,8 +38,8 @@ exports.create =(req, res) => {
 }
 
 exports.findByPk = async (req, res) => {
-  // TODO This breakes if the header isn't there
-  i18n.setLocale(req.headers.mylanguage)
+  i18n.setLocale(returnLanguage(req.headers))
+  
   const item = await Item.findByPk(req.params.id);
   if (item == null){
     res.send({message: i18n.__("items.no_item_found")})
@@ -46,8 +49,7 @@ exports.findByPk = async (req, res) => {
 };
 
 exports.update = (req, res) => {
-  // TODO This breakes if the header isn't there
-  i18n.setLocale(req.headers.mylanguage)
+  i18n.setLocale(returnLanguage(req.headers))
 
   Item.update({
     name: req.body["name"],
@@ -71,9 +73,8 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  // TODO This breakes if the header isn't there
-  i18n.setLocale(req.headers.mylanguage)
-  
+  i18n.setLocale(returnLanguage(req.headers))
+
   Item.destroy({
     where: {
       id: req.params.id

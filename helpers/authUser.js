@@ -1,12 +1,15 @@
 
 import jwt from 'jsonwebtoken';
 import rolePermissions from '../config/rolePermissions.js'
+
+// Group these into an index somewhere
 import { i18n } from '../helpers/setLanguage.js'
+import returnLanguage from '../helpers/returnLanguage'
+import { translateError } from '../helpers/sequelizeTranslate'
 
 const authUser = (accessReq) => {
-  // console.log(accessReq)
   return (req, res, next) => {
-    i18n.setLocale(req.headers.mylanguage)
+    i18n.setLocale(returnLanguage(req.headers))
     try {
       // If jwt.verify doesn't return tru then an error get thrown
       // and the function returns the response in the catch

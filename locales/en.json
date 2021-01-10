@@ -59,6 +59,7 @@
   "authorization": {
     "granted": "Authorization Granted",
     "denied": "Authorization Denied"
-  }
+  },
+  "email_must_be_unique": "here eng"
 
 }

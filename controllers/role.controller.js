@@ -1,9 +1,11 @@
 const db = require("../models");
 const Role = db.role;
+import returnLanguage from '../helpers/returnLanguage'
+import { translateError } from '../helpers/sequelizeTranslate'
+
 
 exports.findAll = (req, res) => {
-  // TODO This breakes if the header isn't there
-  i18n.setLocale(req.headers.mylanguage)
+  i18n.setLocale(returnLanguage(req.headers))
 
   Role.findAll()
     .then(data => {
@@ -18,6 +20,8 @@ exports.findAll = (req, res) => {
 };
 
 exports.create =(req,res) => {
+  i18n.setLocale(returnLanguage(req.headers))
+
   Role.create({name: req.body["name"]})
   .then(data =>{
     res.send(data)
@@ -25,8 +29,7 @@ exports.create =(req,res) => {
 };
 
 exports.findByPk = async (req, res) => {
-  // TODO This breakes if the header isn't there
-  i18n.setLocale(req.headers.mylanguage)
+  i18n.setLocale(returnLanguage(req.headers))
 
   const role = await Role.findByPk(req.params.id);
   if (role == null){
@@ -37,8 +40,7 @@ exports.findByPk = async (req, res) => {
 }; 
 
 exports.update = (req, res) => {
-  // TODO This breakes if the header isn't there
-  i18n.setLocale(req.headers.mylanguage)
+  i18n.setLocale(returnLanguage(req.headers))
 
   Role.update({
     name: req.body["name"]
@@ -56,8 +58,7 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  // TODO This breakes if the header isn't there
-  i18n.setLocale(req.headers.mylanguage)
+  i18n.setLocale(returnLanguage(req.headers))
 
   Role.destroy({
     where: {

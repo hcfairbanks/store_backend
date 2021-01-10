@@ -1,10 +1,13 @@
 const db = require("../models");
 const Category = db.category;
 import { i18n } from '../helpers/setLanguage.js'
+import returnLanguage from '../helpers/returnLanguage'
+import { translateError } from '../helpers/sequelizeTranslate'
+
+
 
 exports.findAll = (req, res) => {
-  // TODO This breakes if the header isn't there
-  i18n.setLocale(req.headers.mylanguage)
+  i18n.setLocale(returnLanguage(req.headers))
 
   Category.findAll()
     .then(data => {
@@ -26,8 +29,7 @@ exports.create =(req,res) => {
 }
 
 exports.findByPk = async (req, res) => {
-  // TODO This breakes if the header isn't there
-  i18n.setLocale(req.headers.mylanguage)
+  i18n.setLocale(returnLanguage(req.headers))
 
   const category = await Category.findByPk(req.params.id);
   if (category == null){
@@ -38,8 +40,7 @@ exports.findByPk = async (req, res) => {
 }; 
 
 exports.update = (req, res) => {
-  // TODO This breakes if the header isn't there
-  i18n.setLocale(req.headers.mylanguage)
+  i18n.setLocale(returnLanguage(req.headers))
 
   Category.update({
     name: req.body["name"]
@@ -57,8 +58,7 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  // TODO This breakes if the header isn't there
-  i18n.setLocale(req.headers.mylanguage)
+  i18n.setLocale(returnLanguage(req.headers))
   
   Category.destroy({
     where: {

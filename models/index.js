@@ -1,5 +1,5 @@
-const dbConfig = require("../config/db.config.js");
-const Sequelize = require("sequelize");
+import dbConfig from "../config/db.config.js";
+import Sequelize from "sequelize";
 
 module.exports = (lang) => {
   const dbConnection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
@@ -21,15 +21,15 @@ module.exports = (lang) => {
   
   db.item = require("./item.model")(dbConnection, Sequelize);
   db.category = require("./category.model")(dbConnection, Sequelize);
-  db.user = require("./user.model")(dbConnection, Sequelize, db.lang);
+  db.user = require("./user.model")(dbConnection, Sequelize);
   db.role = require("./role.model")(dbConnection, Sequelize);
   
   
   // TODO Not sure if this is actually doing something
-  // db.user.belongsTo(db.role);
-  // db.role.hasMany(db.user);
-  // db.item.belongsTo(db.category);
-  // db.category.hasMany(db.item);
+  db.user.belongsTo(db.role);
+  db.role.hasMany(db.user);
+  db.item.belongsTo(db.category);
+  db.category.hasMany(db.item);
   return db
 }
 

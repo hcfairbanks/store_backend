@@ -60,6 +60,6 @@
 		"granted": "Authorization Granted",
 		"denied": "Authorization Denied"
 	},
-	"email_must_be_unique": "email_must_be_unique",
+	"email_must_be_unique": "email_must_be_unique EL",
 	"dasdsad": "dasdsad"
 }
