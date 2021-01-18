@@ -17,6 +17,7 @@ TODO
   * https://www.youtube.com/watch?v=r8sPUw4uxAI
 - Unit tests
 - Linter needed
+  * https://eslint.org/docs/user-guide/getting-started
 - db more custom validations
 - db delete children objects
 - db prevent parent objects from being deleted if they have children
@@ -45,6 +46,8 @@ npx sequelize-cli db:migrate
 yarn seed
 
 yarn dev
+
+yarn run eslint ( yourfile.js or your_dir )
 
 ################################################################################
 Sequelize DB create migrate seed
