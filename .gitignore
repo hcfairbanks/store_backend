@@ -1,5 +1,4 @@
 node_modules
-README.md
 commands_history.txt
 yarn.lock
 package-lock.json

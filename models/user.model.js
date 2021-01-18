@@ -23,7 +23,21 @@ const Role = require("./role.model")(dbConnection, Sequelize);
 
 module.exports = (dbConnection, Sequelize) => {
   const user = dbConnection.define("User", {
-    firstName: {type: Sequelize.STRING},
+    firstName: {type: Sequelize.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+            msg: 'First name cannot be empty'
+        },
+        // This isn't working because Bcrypt is entring in something when it's null
+        // Needs to be stopped by the controller too
+        // Look here for pw validations => https://sequelize.org/master/manual/validations-and-constraints.html
+        notEmpty: {
+          args: true,
+          msg: 'First name cannot be empty'
+        }
+      }
+    },
     lastName: {type: Sequelize.STRING},
     email: {
             type: Sequelize.STRING,
@@ -37,14 +51,14 @@ module.exports = (dbConnection, Sequelize) => {
                 allowNull: false,
                 validate: {
                   notNull: {
-                      msg: 'La categoría debe tener un nombre.'
+                      msg: 'Password cannot be empty'
                   },
                   // This isn't working because Bcrypt is entring in something when it's null
                   // Needs to be stopped by the controller too
                   // Look here for pw validations => https://sequelize.org/master/manual/validations-and-constraints.html
                   notEmpty: {
                     args: true,
-                    msg: 'La categoría debe tener un nombre.'
+                    msg: 'Password cannot be empty'
                   }
                 }
               },
