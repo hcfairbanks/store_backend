@@ -1,11 +1,8 @@
 import db from "../models";
-//const db = require("../models");
 const Category = db.category;
 import { i18n } from '../helpers/setLanguage.js'
 import returnLanguage from '../helpers/returnLanguage'
 import { translateError } from '../helpers/sequelizeTranslate'
-
-
 
 exports.findAll = (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
