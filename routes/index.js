@@ -36,20 +36,32 @@ const setLangage = () => {
   }
 }
 
-router.get('/', setLangage(), (req, res, next) => {
+// router.get('/', setLangage(), (req, res, next) => {
+//   //  Create middle wear that checks for this and sets the language.
+//   //  Middle wear will need to be a helper that gets accessed throgh 
+//   //  each controller so the text the controller returns is appropriate.
+//   //  This expects this header myLanguage with a language value like en
+//   console.log(req.headers.mylanguage)
+//   res.json({greeting: i18n.__('Hello')});
+// });
+
+router.get('/', (req, res, next) => {
   //  Create middle wear that checks for this and sets the language.
   //  Middle wear will need to be a helper that gets accessed throgh 
   //  each controller so the text the controller returns is appropriate.
   //  This expects this header myLanguage with a language value like en
   console.log(req.headers.mylanguage)
-  res.json({greeting: i18n.__('Hello')});
+  res.json({greeting: "Home Page"});
 });
 
 router.post("/login", users.login);
 
 // Users
 router.post("/users", authUser(["users","create"]), users.create);
+
 router.get("/users", authUser(["users","index"]), users.findAll);
+//router.get("/users", users.findAll);
+
 router.patch("/users",authUser(["users","update"]), users.update);
 router.get("/users/:id", authUser(["users","show"]), users.findByPk);
 router.delete("/users/:id", authUser(["users","delete"]), users.delete);
@@ -64,6 +76,7 @@ router.delete("/roles/:id", authUser(["roles","delete"]), roles.delete);
 // Categories
 router.post("/categories", authUser(["categories","create"]), categories.create);
 router.get("/categories", authUser(["categories","index"]), categories.findAll);
+//router.get("/categories", categories.findAll);
 router.patch("/categories", authUser(["categories","update"]), categories.update);
 router.get("/categories/:id", authUser(["categories","show"]), categories.findByPk);
 router.delete("/categories/:id", authUser(["categories","delete"]), categories.delete);

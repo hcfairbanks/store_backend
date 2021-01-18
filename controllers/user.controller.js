@@ -6,7 +6,9 @@ import { i18n } from '../helpers/setLanguage.js'
 import returnLanguage from '../helpers/returnLanguage'
 import { translateError } from '../helpers/sequelizeTranslate'
 
-const db = require("../models")("el");
+import db from "../models";
+
+//const db = require("../models");
 const User = db.user;
 const Role = db.role;
 const saltRounds = 10;

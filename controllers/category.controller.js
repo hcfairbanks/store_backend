@@ -1,4 +1,5 @@
-const db = require("../models");
+import db from "../models";
+//const db = require("../models");
 const Category = db.category;
 import { i18n } from '../helpers/setLanguage.js'
 import returnLanguage from '../helpers/returnLanguage'

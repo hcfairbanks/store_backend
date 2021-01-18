@@ -1,5 +1,6 @@
 //const db = require("../models");
-const db = require("../models")('en');
+//const db = require("../models");
+import db from "../models";
 const Item = db.item;
 const Category = db.category;
 import { i18n } from '../helpers/setLanguage.js'

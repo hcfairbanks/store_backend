@@ -1,4 +1,7 @@
-const db = require("./models");
+//const db = require("./models");
+
+import db from "./models";
+
 const Role = db.role;
 const User = db.user;
 const saltRounds = 10;
