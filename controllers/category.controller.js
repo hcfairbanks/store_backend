@@ -1,8 +1,9 @@
 import db from "../models";
-const Category = db.category;
-import { i18n } from '../helpers/setLanguage.js'
 import returnLanguage from '../helpers/returnLanguage'
+import { i18n } from '../helpers/setLanguage.js'
 import { translateError } from '../helpers/sequelizeTranslate'
+
+const Category = db.category;
 
 exports.findAll = (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
@@ -23,6 +24,9 @@ exports.create =(req,res) => {
   Category.create({name: req.body["name"]})
   .then(data =>{
     res.send(data)
+  }).catch(error => {
+    // console.log(translateError(error)); // Start here tomorrow
+    res.json(i18n.__(error.errors[0].message));
   })
 }
 
@@ -37,38 +41,34 @@ exports.findByPk = async (req, res) => {
   }
 }; 
 
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
 
-  Category.update({
-    name: req.body["name"]
-  }, {
-    where: { id: req.body["id"] }
-   }).then(result => {
-    if ( result == 1){
-        res.status(200).json({message: i18n.__("categories.update_success") ,result: result});
-    }else{
-      res.status(500).json({message: i18n.__("categories.update_failed"),result: result});
-    }
-  }).catch(error => {
-    console.log(error)
-  })
+  let category = await Category.findByPk(req.body["id"]);
+  if (category == null){
+    res.send({message: i18n.__("categories.no_category_found")})
+  } else{
+    category.update({name: req.body["name"]})
+    .then(data =>{
+      res.send(data)
+    }).catch(error => {
+      res.json(error);
+    })
+  }
 };
 
-exports.delete = (req, res) => {
+exports.delete = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
-  
-  Category.destroy({
-    where: {
-      id: req.params.id
-    }
-  }).then(result => {
-    if ( result == 1){
-        res.status(200).json({message: i18n.__("categories.delete_success"), result: result});
-    }else{
-      res.status(500).json({message: i18n.__("categories.delete_failed"), result: result});
-    }
-  }).catch(error => {
-    console.log(error)
-  })
+
+  let category = await Category.findByPk(req.params.id);
+  if (category == null){
+    res.send({message: i18n.__("categories.no_category_found")})
+  } else{
+    category.destroy({ where: { id: req.params.id }})
+    .then(data =>{
+      res.status(200).json({message: i18n.__("categories.delete_success"), data: data});
+    }).catch(error => {
+      res.json(error);
+    })
+  }
 };

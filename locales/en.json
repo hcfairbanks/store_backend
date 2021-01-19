@@ -32,12 +32,14 @@
 		"update_fail": "items.update_fail"
 	},
 	"categories": {
+		"name_cannot_be_empty": "Name can not be empty. ENGLISH.",
 		"update_success": "Updating data successful.",
 		"update_failed": "Updating data failed.",
 		"no_category_found": "No Category found with that id.",
 		"error_retrieving_categories": "Error occurred while retrieving Categories.",
 		"delete_success": "Category successfully deleted",
-		"delete_fail": "Category deletion failed"
+		"delete_fail": "Category deletion failed",
+		"delete_failed": "categories.delete_failed"
 	},
 	"roles": {
 		"update_success": "Updating data successful.",
@@ -62,5 +64,6 @@
 		"granted": "Authorization Granted",
 		"denied": "Authorization Denied"
 	},
-	"email_must_be_unique": "here eng"
+	"email_must_be_unique": "here eng",
+	"name_cannot_be_empty": "name_cannot_be_empty"
 }
