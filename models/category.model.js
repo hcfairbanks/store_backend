@@ -5,7 +5,7 @@ module.exports = (dbConnection, Sequelize) => {
       allowNull: false,
       unique: {
         args: 'uniqueKey',
-        msg: "name_must_be_unique"
+        msg: "categories.name_must_be_unique"
       },
       validate: {
         notNull: {
