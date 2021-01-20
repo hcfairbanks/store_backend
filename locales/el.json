@@ -36,7 +36,8 @@
 		"no_category_found": "No Category found with that id.",
 		"error_retrieving_categories": "Error occurred while retrieving Categories.",
 		"delete_success": "Category successfully deleted",
-		"delete_fail": "Category deletion failed"
+		"delete_fail": "Category deletion failed",
+		"name_must_be_unique": "Categories name_must_be_unique EL"
 	},
 	"roles": {
 		"update_success": "Updating data successful.",

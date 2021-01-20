@@ -1,7 +1,6 @@
 import db from "../models";
 import returnLanguage from '../helpers/returnLanguage'
 import { i18n } from '../helpers/setLanguage.js'
-import { translateError } from '../helpers/sequelizeTranslate'
 
 const Category = db.category;
 
@@ -10,23 +9,32 @@ exports.findAll = (req, res) => {
 
   Category.findAll()
     .then(data => {
-      res.send(data);
+      res.status(200).send(data);
     })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || i18n.__("categories.error_retrieving_categories")
-      });
+    .catch(error => {
+      res.status(500).json(
+        { // Not sure I can predict what the error might be on a request to the index
+          errorMsg: i18n.__("categories.error_retrieving_categories"),
+          error: error,
+          requestBody: req.body,
+          requestParams: req.params
+        });
     });
 };
 
 exports.create =(req,res) => {
   Category.create({name: req.body["name"]})
   .then(data =>{
-    res.send(data)
+    res.status(201).send(data)
   }).catch(error => {
-    // console.log(translateError(error)); // Start here tomorrow
-    res.json(i18n.__(error.errors[0].message));
+    res.status(400).json(
+      {
+        errorMsg: i18n.__(error.errors[0].message),
+        error: error,
+        requestBody: req.body,
+        requestParams: req.params
+      }
+    );
   })
 }
 
