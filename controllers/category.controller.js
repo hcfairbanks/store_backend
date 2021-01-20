@@ -6,7 +6,6 @@ const Category = db.category;
 
 exports.findAll = (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
-
   Category.findAll()
     .then(data => {
       res.status(200).send(data);

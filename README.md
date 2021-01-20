@@ -105,6 +105,9 @@ https://www.codota.com/code/javascript/functions/sequelize/Model/update
 
 sequelize validations and constraints
 https://sequelize.org/master/manual/validations-and-constraints.html
+
+ON DELETE CASCADE
+https://stackoverflow.com/questions/23128816/sequelize-js-ondelete-cascade-is-not-deleting-records-sequelize/32271841
 --------------------------------------------------------------------------------
 JWT
 https://www.freecodecamp.org/news/securing-node-js-restful-apis-with-json-web-tokens-9f811a92bb52/
@@ -131,4 +134,7 @@ https://medium.com/@mridu.sh92/a-quick-guide-for-authentication-using-bcrypt-on-
 --------------------------------------------------------------------------------
 Postman, setting env varibales ( for JWT loging in)
 https://blog.postman.com/extracting-data-from-responses-and-chaining-requests/
+--------------------------------------------------------------------------------
+Getting request url to check for domain or sub-domain
+https://stackoverflow.com/questions/10183291/how-to-get-the-full-url-in-express
 --------------------------------------------------------------------------------
