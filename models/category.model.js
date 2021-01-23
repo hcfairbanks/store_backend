@@ -1,5 +1,5 @@
 module.exports = (dbConnection, Sequelize) => {
-  const role = dbConnection.define("Category", {
+  const category = dbConnection.define("Category", {
     name: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -19,5 +19,5 @@ module.exports = (dbConnection, Sequelize) => {
     }
   });
 
-  return role;
+  return category;
 };

@@ -22,6 +22,8 @@ exports.findAll = (req, res) => {
 };
 
 exports.create =(req,res) => {
+  i18n.setLocale(returnLanguage(req.headers))
+
   Category.create({name: req.body["name"]})
   .then(data =>{
     res.status(201).send(data)
@@ -42,7 +44,7 @@ exports.findByPk = async (req, res) => {
 
   const category = await Category.findByPk(req.params.id);
   if (category == null){
-    res.send({message: i18n.__("categories.no_category_found")})
+    res.status(200).send({message: i18n.__("categories.no_category_found")})
   } else{
     res.send(category)
   }
@@ -57,9 +59,9 @@ exports.update = async (req, res) => {
   } else{
     category.update({name: req.body["name"]})
     .then(data =>{
-      res.send(data)
+      res.status(200).send(data)
     }).catch(error => {
-      res.json(error);
+      res.status(500).json(error);
     })
   }
 };
@@ -69,13 +71,13 @@ exports.delete = async (req, res) => {
 
   let category = await Category.findByPk(req.params.id);
   if (category == null){
-    res.send({message: i18n.__("categories.no_category_found")})
+    res.status(200).send({message: i18n.__("categories.no_category_found")})
   } else{
     category.destroy({ where: { id: req.params.id }})
     .then(data =>{
       res.status(200).json({message: i18n.__("categories.delete_success"), data: data});
     }).catch(error => {
-      res.json(error);
+      res.status(500).json(error);
     })
   }
 };

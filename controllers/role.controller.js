@@ -1,77 +1,82 @@
-//const db = require("../models");
 import db from "../models";
-const Role = db.role;
 import returnLanguage from '../helpers/returnLanguage'
-import { translateError } from '../helpers/sequelizeTranslate'
 import { i18n } from '../helpers/setLanguage.js'
+const Role = db.role;
 
 exports.findAll = (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
-
   Role.findAll()
     .then(data => {
-      res.send(data);
+      res.status(200).send(data);
     })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || i18n.__("roles.error_retrieving_roles")
-      });
+    .catch(error => {
+      res.status(500).json(
+        { // Not sure I can predict what the error might be on a request to the index
+          errorMsg: i18n.__("roles.error_retrieving_roles"),
+          error: error,
+          requestBody: req.body,
+          requestParams: req.params
+        });
     });
 };
 
 exports.create =(req,res) => {
   i18n.setLocale(returnLanguage(req.headers))
-
+  
   Role.create({name: req.body["name"]})
   .then(data =>{
-    res.send(data)
+    res.status(201).send(data)
+  }).catch(error => {
+    res.status(400).json(
+      {
+        errorMsg: i18n.__(error.errors[0].message),
+        error: error,
+        requestBody: req.body,
+        requestParams: req.params
+      }
+    );
   })
-};
+}
 
 exports.findByPk = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
 
-  const role = await Role.findByPk(req.params.id);
-  if (role == null){
-    res.send({message: i18n.__("roles.no_role_found")})
+  const category = await Category.findByPk(req.params.id);
+  if (category == null){
+    res.status(200).send({message: i18n.__("roles.no_role_found")})
   } else{
-    res.send(role)
+    res.send(category)
   }
 }; 
 
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
 
-  Role.update({
-    name: req.body["name"]
-  }, {
-    where: { id: req.body["id"] }
-   }).then(result => {
-    if ( result == 1){
-        res.status(200).json({message: i18n.__("roles.update_success"), result: result});
-    }else{
-      res.status(500).json({message: i18n.__("roles.update_failed"), result: result});
-    }
-  }).catch(error => {
-    console.log(error)
-  })
+  let role = await Role.findByPk(req.body["id"]);
+  if (role == null){
+    res.send({message: i18n.__("roles.no_role_found")})
+  } else{
+    role.update({name: req.body["name"]})
+    .then(data =>{
+      res.status(200).send(data)
+    }).catch(error => {
+      res.status(500).json(error);
+    })
+  }
 };
 
-exports.delete = (req, res) => {
+exports.delete = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
 
-  Role.destroy({
-    where: {
-      id: req.params.id
-    }
-  }).then(result => {
-    if ( result == 1){
-        res.status(200).json({message: i18n.__("roles.delete_success"), result: result});
-    }else{
-      res.status(500).json({message: i18n.__("roles.update_failed"), result: result});
-    }
-  }).catch(error => {
-    console.log(error)
-  })
+  let role = await Role.findByPk(req.params.id);
+  if (role == null){
+    res.send({message: i18n.__("roles.no_role_found")})
+  } else{
+    role.destroy({ where: { id: req.params.id }})
+    .then(data =>{
+      res.status(200).json({message: i18n.__("roles.delete_success"), data: data});
+    }).catch(error => {
+      res.status(500).json(error);
+    })
+  }
 };

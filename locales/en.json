@@ -23,6 +23,8 @@
 		}
 	},
 	"items": {
+		"name_cannot_be_empty": "Name can not be empty. ENGLISH.",
+		"category_cannot_be_empty": "Category can not be empty. ENGLISH.",
 		"update_success": "Updating data successful.",
 		"update_failed": "Updating data failed.",
 		"no_item_found": "No Item found with that id.",
@@ -48,7 +50,8 @@
 		"no_role_found": "No Role found with that id.",
 		"error_retrieving_roles": "Error occurred while retrieving Roles.",
 		"delete_success": "Role successfully deleted",
-		"delete_fail": "Role deletion failed"
+		"delete_fail": "Role deletion failed",
+		"name_must_be_unique": "roles.name_must_be_unique"
 	},
 	"users": {
 		"update_success": "Updating data successful.",
