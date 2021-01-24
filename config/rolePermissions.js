@@ -19,7 +19,9 @@ const rolePermissions = {
                          "show",
                          "create",
                          "update",
-                         "delete"
+                         "delete",
+                         "adminUserUpdate",
+                         "updatePassword"
                        ],
               "roles": [
                         "index",
@@ -49,7 +51,8 @@ const rolePermissions = {
                           "show",
                           "create",
                           "update",
-                          "delete"
+                          "delete",
+                          "updatePassword"
                        ],
               "roles": [
                           "index",
@@ -63,7 +66,11 @@ const rolePermissions = {
                  "items": [
                              "index",
                              "show"
-                          ]
+                          ],
+                  "users": [
+                     "updatePassword",
+                     "update"
+                  ]
               }
 };
 

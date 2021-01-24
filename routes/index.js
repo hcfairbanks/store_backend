@@ -44,4 +44,7 @@ router.patch("/users",authUser(["users","update"]), users.update);
 router.get("/users/:id", authUser(["users","show"]), users.findByPk);
 router.delete("/users/:id", authUser(["users","delete"]), users.delete);
 
+router.patch("/adminUserUpdate",authUser(["users","adminUserUpdate"]), users.adminUserUpdate);
+router.patch("/usersUpdatePassword",authUser(["users","updatePassword"]), users.updatePassword);
+
 export default router;

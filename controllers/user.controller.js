@@ -8,6 +8,9 @@ import { translateError } from '../helpers/sequelizeTranslate'
 
 import rolePermissions from '../config/rolePermissions.js'
 
+// bcrypt docs
+// https://www.npmjs.com/package/bcrypt
+
 
 const User = db.user;
 const Role = db.role;
@@ -119,75 +122,32 @@ exports.findByPk = async (req, res) => {
   }
 };
 
-// Change this for security
-// The password in the update needs to be hashed
-exports.update = (req, res) => {
-  i18n.setLocale(returnLanguage(req.headers))
-
-  User.update({
-    firstName: req.body["firstName"],
-    lastName: req.body["lastName"],
-    email: req.body["email"] // In future might want a seperate update that sends out a confirmation email or something
-  }, {
-    where: { id: req.body["id"] }
-   }).then(result => {
-    if ( result == 1){
-      res.status(200).json({message: i18n.__("users.update_success"), result: result});
-    }else{
-      res.status(500).json({message: i18n.__("users.update_failed"), result: result});
-    }
-  }).catch(error => {
-    console.log(error)
-  })
-};
-
-exports.updatePassword = async (req, res) => {
+exports.update = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
   if ( canAccessUser(req, req.body["id"]) ){
-    let user = await User.findByPk(req.body["id"]);
+    const user = await User.findByPk(req.body["id"]);
     if (user == null){
       res.send({message: i18n.__("users.no_user_found")})
-    } else{
-      bcrypt.hash(req.body["password"], saltRounds, function (err, hash) {
-        role.update({password: hash})
+    } else {
+      user.update(
+        {
+          firstName: req.body["firstName"],
+          lastName: req.body["lastName"],
+          email: req.body["email"]
+        })
+        .then((result)=>{
+          const data = {
+            id: result.id,
+            firstName: result["firstName"],
+            lastName: result["lastName"],
+            email: result["email"]
+          }
+          res.status(200).json({message: i18n.__("users.update_success"), data: data});
+        }).catch(error => {
+          res.status(500).json(error);
       })
-      .then(data =>{
-        res.status(200).send({message: i18n.__("users.update_success"), data: data});
-      }).catch(error => {
-        res.status(500).json(error);
-      })
-    }
-  }else{
-    res.status(403).send({message: i18n.__("users.access_denied")})
-  }
-};
-
-exports.adminUserUpdate = async (req, res) => {
-  i18n.setLocale(returnLanguage(req.headers))
-
-  if ( isAdmin(req) ){
-    let user = await User.findByPk(req.body["id"]);
-    if (user == null){
-      res.send({message: i18n.__("users.no_user_found")})
-    } else{
-      bcrypt.hash(req.body["password"], saltRounds, function (err, hash) {
-        user.update(
-          {
-            firstName: req.body["firstName"],
-            lastName: req.body["lastName"],
-            email: req.body["email"],
-            password: hash,
-            RoleId: req.body["RoleId"],
-            password: hash
-         })
-      })
-      .then(data =>{
-        res.status(200).send({message: i18n.__("users.update_success"), data: data});
-      }).catch(error => {
-        res.status(500).json(error);
-      })
-    }
-  }else{
+      }
+  } else {
     res.status(403).send({message: i18n.__("users.access_denied")})
   }
 };
@@ -207,9 +167,58 @@ exports.delete = (req, res) => {
       }
     }).catch(error => {
       console.log(error)
-      res.status(500).json({error: error});
     })
-  } else {
+  }else{
     res.status(403).send({message: i18n.__("users.access_denied")})
+  }
+};
+
+exports.adminUserUpdate = async (req, res) => {
+  i18n.setLocale(returnLanguage(req.headers))
+  if ( isAdmin(req) ){
+    const user = await User.findByPk(req.body["id"]);
+  if (user == null){
+    res.send({message: i18n.__("users.no_user_found")})
+  } else {
+    user.update(
+      {
+        firstName: req.body["firstName"],
+        lastName: req.body["lastName"],
+        email: req.body["email"],
+        RoleId: req.body["RoleId"]
+      })
+      .then((result)=>{
+        res.status(200).json({message: i18n.__("users.update_success"), result: result});
+      }).catch(error => {
+        res.status(500).json(error);
+      })
+    }
+  }
+};
+
+
+exports.updatePassword = async (req, res) => {
+  i18n.setLocale(returnLanguage(req.headers))
+  if ( canAccessUser(req, req.body["id"]) ){
+    const user = await User.findByPk(req.body["id"]);
+  if (user == null){
+    res.send({message: i18n.__("users.no_user_found")})
+  } else {
+    user.update(
+      {
+        password: bcrypt.hashSync(req.body["password"], saltRounds)
+      })
+      .then((result)=>{
+        const data = {
+          id: result.id,
+          firstName: result["firstName"],
+          lastName: result["lastName"],
+          email: result["email"]
+        }
+        res.status(200).json({message: i18n.__("users.update_success"), data: data});
+      }).catch(error => {
+        res.status(500).json(error);
+      })
+    }
   }
 };
