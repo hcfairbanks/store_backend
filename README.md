@@ -7,7 +7,7 @@ TODO
 - Translate all custom validation error messages from the sequilize ORM for 
   their respective models
 - Roles might be better in a yaml file
-- User updtae password
+- User update password
   * Allow admins to change any user passwords
   * Allow Users to change 'their' passwords
   * User update password needs to be hashed
@@ -20,11 +20,9 @@ TODO
   * https://eslint.org/docs/user-guide/getting-started
 - db more custom validations
 - db delete children objects
-- db prevent parent objects from being deleted if they have children
 - Better seeds with some kind of looping
 - Create a setup guide
 - Create a usefull instructions section
-- Create useful references section
 - Transaction locks
   + https://makandracards.com/makandra/31937-differences-between-transactions-and-locking
   + https://sequelize.org/master/class/lib/transaction.js~Transaction.html#static-get-LOCK
@@ -120,11 +118,15 @@ https://www.npmjs.com/package/jsonwebtoken#jwtsignpayload-secretorprivatekey-opt
 Authentication and Authorization
 https://stackabuse.com/authentication-and-authorization-with-jwts-in-express-js/
 
-https://www.youtube.com/watch?v=zYi9PguVFx8
-
+Node.js - Role Based Authorization Tutorial with Example API
 https://jasonwatmore.com/post/2018/11/28/nodejs-role-based-authorization-tutorial-with-example-api
 
+How To Manage User Roles In Node.js
 https://www.youtube.com/watch?v=jI4K7L-LI58
+
+NodeJS / Express Authorization Middleware
+https://www.youtube.com/watch?v=zYi9PguVFx8
+
 --------------------------------------------------------------------------------
 Patch vs Put
 https://rapidapi.com/blog/put-vs-patch/

@@ -61,7 +61,7 @@
 		"delete_success": "User successfully deleted",
 		"delete_fail": "User deletion failed",
 		"access_granted": "Access Granted",
-		"access_denied": "Access Denied123",
+		"access_denied": "Access Denied EN",
 		"email_must_be_unique": "email_must_be_unique EN"
 	},
 	"authorization": {

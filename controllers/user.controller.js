@@ -6,6 +6,9 @@ import returnLanguage from '../helpers/returnLanguage'
 import { i18n } from '../helpers/setLanguage.js'
 import { translateError } from '../helpers/sequelizeTranslate'
 
+import rolePermissions from '../config/rolePermissions.js'
+
+
 const User = db.user;
 const Role = db.role;
 const saltRounds = 10;
@@ -38,9 +41,11 @@ function generateAccessToken(user) {
   //return jwt.sign(username, process.env.TOKEN_SECRET, { "expiresIn": 1000 });
   return jwt.sign({
     email: user.email,
-    role: user.Role.name
+    role: user.Role.name,
+    id: user.id
   }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
 };
+
 
 exports.create =(req,res) => {
   i18n.setLocale(returnLanguage(req.headers))
@@ -85,14 +90,32 @@ exports.login = (req, res) =>{
   });
 };
 
+function canAccessUser(req, user_id){
+  const decoded = jwt.verify(req.headers.bearer, process.env.TOKEN_SECRET);
+  return (
+    user_id == decoded.id || decoded.role == 'admin'
+  )
+}
+
+function isAdmin(req){
+  const decoded = jwt.verify(req.headers.bearer, process.env.TOKEN_SECRET);
+  return (
+    decoded.role == 'admin'
+  )
+}
+
 exports.findByPk = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
 
-  const user = await User.findByPk(req.params.id);
-  if (user == null){
-    res.send({message: i18n.__("users.no_user_found")})
+  if ( canAccessUser(req, req.params.id) ){
+    const user = await User.findByPk(req.params.id);
+    if (user == null){
+      res.status(404).send({message: i18n.__("users.no_user_found")})
+    } else {
+      res.status(200).send(user)
+    }
   } else {
-    res.send(user)
+    res.status(403).send({message: i18n.__("users.access_denied")})
   }
 };
 
@@ -104,9 +127,7 @@ exports.update = (req, res) => {
   User.update({
     firstName: req.body["firstName"],
     lastName: req.body["lastName"],
-    email: req.body["email"],
-    password: req.body["password"], // Password section will need to be flushed out for an update
-    RoleId: req.body["RoleId"] // Change this later to a seperate call that requires admin permissions
+    email: req.body["email"] // In future might want a seperate update that sends out a confirmation email or something
   }, {
     where: { id: req.body["id"] }
    }).then(result => {
@@ -118,22 +139,77 @@ exports.update = (req, res) => {
   }).catch(error => {
     console.log(error)
   })
-  
+};
+
+exports.updatePassword = async (req, res) => {
+  i18n.setLocale(returnLanguage(req.headers))
+  if ( canAccessUser(req, req.body["id"]) ){
+    let user = await User.findByPk(req.body["id"]);
+    if (user == null){
+      res.send({message: i18n.__("users.no_user_found")})
+    } else{
+      bcrypt.hash(req.body["password"], saltRounds, function (err, hash) {
+        role.update({password: hash})
+      })
+      .then(data =>{
+        res.status(200).send({message: i18n.__("users.update_success"), data: data});
+      }).catch(error => {
+        res.status(500).json(error);
+      })
+    }
+  }else{
+    res.status(403).send({message: i18n.__("users.access_denied")})
+  }
+};
+
+exports.adminUserUpdate = async (req, res) => {
+  i18n.setLocale(returnLanguage(req.headers))
+
+  if ( isAdmin(req) ){
+    let user = await User.findByPk(req.body["id"]);
+    if (user == null){
+      res.send({message: i18n.__("users.no_user_found")})
+    } else{
+      bcrypt.hash(req.body["password"], saltRounds, function (err, hash) {
+        user.update(
+          {
+            firstName: req.body["firstName"],
+            lastName: req.body["lastName"],
+            email: req.body["email"],
+            password: hash,
+            RoleId: req.body["RoleId"],
+            password: hash
+         })
+      })
+      .then(data =>{
+        res.status(200).send({message: i18n.__("users.update_success"), data: data});
+      }).catch(error => {
+        res.status(500).json(error);
+      })
+    }
+  }else{
+    res.status(403).send({message: i18n.__("users.access_denied")})
+  }
 };
 
 exports.delete = (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
-  User.destroy({
-    where: {
-      id: req.params.id
-    }
-  }).then(result => {
-    if ( result == 1){
-      res.status(200).json({message: i18n.__("users.delete_success"), result: result});
-    }else{
-      res.status(500).json({message: i18n.__("users.delete_failed"), result: result});
-    }
-  }).catch(error => {
-    console.log(error)
-  })
+  if ( canAccessUser(req, req.body["id"]) ){
+    User.destroy({
+      where: {
+        id: req.params.id
+      }
+    }).then(result => {
+      if ( result == 1){
+        res.status(200).json({message: i18n.__("users.delete_success"), result: result});
+      }else{
+        res.status(500).json({message: i18n.__("users.delete_failed"), result: result});
+      }
+    }).catch(error => {
+      console.log(error)
+      res.status(500).json({error: error});
+    })
+  } else {
+    res.status(403).send({message: i18n.__("users.access_denied")})
+  }
 };
