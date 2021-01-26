@@ -1,3 +1,9 @@
+// TODO set the database to test
+// Destroy DB before test if it exists
+// Seed DB before test
+// Destroy DB after test
+
+
 // Integration tests
 // Unit tests needed
 
@@ -44,16 +50,48 @@ describe("Test the root path", () => {
   .get("/")
   .set('myLanguage', 'en');
 
-  test("It should response the GET method", async () => {
+
+
+  // test("It should response the GET method", async () => {
+  //   // For format of the requests being sent 
+  //   // look at the supertest docs here
+  //   // https://www.npmjs.com/package/supertest
+
+  //   const response = await request(app)
+  //                           .get("/")
+  //                           .set('myLanguage', 'en');
+  //   //await console.log(response.body)
+  //   console.log("JWT: ",jwt.body)
+  //   expect(response.statusCode).toBe(200);
+  // });
+
+
+
+
+
+  test("Login should fail", async () => {
     // For format of the requests being sent 
     // look at the supertest docs here
     // https://www.npmjs.com/package/supertest
 
+    
     const response = await request(app)
-                            .get("/")
+                            .post('/login')
+                            .send({ email: 'admin@test.com', password: 'pa55w0rd' })
                             .set('myLanguage', 'en');
     //await console.log(response.body)
-    console.log(jwt.body)
+    console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$",response.body.message);
+    console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$",response.body.jwt);
+    expect(response.body.message).toBe('Access Granted');
     expect(response.statusCode).toBe(200);
   });
+
+  // {
+  //   "email": "admin@test.com",
+  //   "password": "pa55w0rd"
+  // }
+
+
+
+
 });
