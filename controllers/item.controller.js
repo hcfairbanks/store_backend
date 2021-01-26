@@ -8,7 +8,7 @@ exports.findAll = (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
   Item.findAll({include: [ {model: Category} ],})
     .then(data => {
-      res.status(200).send(data);
+      res.status(200).json(data);
     })
     .catch(error => {
       res.status(500).json(
@@ -32,9 +32,9 @@ exports.create =(req,res) => {
     CategoryId: req.body["CategoryId"]
   })
   .then(data =>{
-    res.status(201).send(data)
+    res.status(201).json(data)
   }).catch(error => {
-    res.status(400).send(
+    res.status(400).json(
       {
         //errorMsg: i18n.__(error.errors[0].message),
         error: error,
@@ -50,9 +50,9 @@ exports.findByPk = async (req, res) => {
 
   const item = await Item.findByPk(req.params.id);
   if (item == null){
-    res.send({message: i18n.__("items.no_item_found")})
+    res.json({message: i18n.__("items.no_item_found")})
   } else{
-    res.send(item)
+    res.json(item)
   }
 };
 
@@ -60,8 +60,6 @@ exports.update = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
 
   let item = await Item.findByPk(req.body["id"]);
-  console.log(item)
-  console.log('*******************************')
   if (item === null){
     res.status(500).json({message: i18n.__("items.no_item_found")});
     // res.status(200).json({message: i18n.__n('%s cat', 1)});
@@ -77,7 +75,7 @@ exports.update = async (req, res) => {
       res.status(200).json({message: i18n.__("items.update_success"), result: result});
     }).catch(error => {
       //res.status(500).json(error);
-      res.status(500).send(
+      res.status(500).json(
         { // TODO fix this, might happen when I add validation
           // errorMsg: i18n.__(error.errors[0].message),
           error: error,
@@ -93,7 +91,7 @@ exports.delete = async (req, res) => {
 
   let item = await Item.findByPk(req.params.id);
   if (item == null){
-    res.send({message: i18n.__("items.no_item_found")})
+    res.json({message: i18n.__("items.no_item_found")})
   } else{
     item.destroy({ where: { id: req.params.id }})
     .then(data =>{

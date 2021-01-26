@@ -32,7 +32,7 @@ module.exports = (dbConnection, Sequelize) => {
     },
     price: {
       type: Sequelize.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
     quantity: {
       type: Sequelize.INTEGER,

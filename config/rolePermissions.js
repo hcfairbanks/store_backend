@@ -62,15 +62,15 @@ const rolePermissions = {
                           "delete"
                        ],
             },
-  "customer": { 
+  "customer": {
                  "items": [
                              "index",
                              "show"
                           ],
                   "users": [
-                     "updatePassword",
-                     "update"
-                  ]
+                             "updatePassword",
+                             "update"
+                           ]
               }
 };
 

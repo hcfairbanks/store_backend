@@ -133,6 +133,9 @@ https://rapidapi.com/blog/put-vs-patch/
 --------------------------------------------------------------------------------
 bcrypt
 https://medium.com/@mridu.sh92/a-quick-guide-for-authentication-using-bcrypt-on-express-nodejs-1d8791bb418f
+
+bcrypt docs
+https://www.npmjs.com/package/bcrypt
 --------------------------------------------------------------------------------
 Postman, setting env varibales ( for JWT loging in)
 https://blog.postman.com/extracting-data-from-responses-and-chaining-requests/

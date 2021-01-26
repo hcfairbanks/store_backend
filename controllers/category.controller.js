@@ -8,7 +8,7 @@ exports.findAll = (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
   Category.findAll()
     .then(data => {
-      res.status(200).send(data);
+      res.status(200).json(data);
     })
     .catch(error => {
       res.status(500).json(
@@ -26,7 +26,7 @@ exports.create =(req,res) => {
 
   Category.create({name: req.body["name"]})
   .then(data =>{
-    res.status(201).send(data)
+    res.status(201).json(data)
   }).catch(error => {
     res.status(400).json(
       {
@@ -44,9 +44,9 @@ exports.findByPk = async (req, res) => {
 
   const category = await Category.findByPk(req.params.id);
   if (category == null){
-    res.status(200).send({message: i18n.__("categories.no_category_found")})
+    res.status(200).json({message: i18n.__("categories.no_category_found")})
   } else{
-    res.send(category)
+    res.json(category)
   }
 }; 
 
@@ -55,11 +55,11 @@ exports.update = async (req, res) => {
 
   let category = await Category.findByPk(req.body["id"]);
   if (category == null){
-    res.send({message: i18n.__("categories.no_category_found")})
+    res.json({message: i18n.__("categories.no_category_found")})
   } else{
     category.update({name: req.body["name"]})
     .then(data =>{
-      res.status(200).send(data)
+      res.status(200).json(data)
     }).catch(error => {
       res.status(500).json(error);
     })
@@ -71,7 +71,7 @@ exports.delete = async (req, res) => {
 
   let category = await Category.findByPk(req.params.id);
   if (category == null){
-    res.status(200).send({message: i18n.__("categories.no_category_found")})
+    res.status(200).json({message: i18n.__("categories.no_category_found")})
   } else{
     category.destroy({ where: { id: req.params.id }})
     .then(data =>{
