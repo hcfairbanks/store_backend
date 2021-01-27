@@ -37,10 +37,21 @@ beforeAll( async () => {
   // Proof of concept
   // the notional JWT value is being set here
   // it's being used in the get test
-  jwt = await request(app)
-                .get("/")
-                .set('myLanguage', 'en');
+
+  // jwt = await request(app)
+  //               .get("/")
+  //               .set('myLanguage', 'en');
   process.env.NODE_ENV = 'test';
+
+  const response = await request(app)
+  .post('/login')
+  .send({ email: 'admin@test.com', password: 'pa55w0rd' })
+  .set('myLanguage', 'en');
+
+  jwt = response.body.jwt
+
+
+
 })
 
 
@@ -73,8 +84,6 @@ describe("Test the root path", () => {
     // For format of the requests being sent 
     // look at the supertest docs here
     // https://www.npmjs.com/package/supertest
-
-    
     const response = await request(app)
                             .post('/login')
                             .send({ email: 'admin@test.com', password: 'pa55w0rd' })
@@ -84,12 +93,21 @@ describe("Test the root path", () => {
     console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$",response.body.jwt);
     expect(response.body.message).toBe('Access Granted');
     expect(response.statusCode).toBe(200);
+    jwt = response.body.jwt
   });
 
-  // {
-  //   "email": "admin@test.com",
-  //   "password": "pa55w0rd"
-  // }
+  test("users Index", async () => {
+    const response = await request(app)
+                            .get('/users')
+                            .set('myLanguage', 'en')
+                            .set('bearer',jwt);
+
+   console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$",response.body.length);
+
+    //expect.arrayContaining('123')
+    expect(response.statusCode).toBe(200);
+    expect(response.body.length).toBe(3);
+  });
 
 
 
