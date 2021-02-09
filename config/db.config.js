@@ -1,8 +1,10 @@
+import * as dbCreds from './config.json';
+
 module.exports = {
-  HOST: "localhost",
-  USER: "deploy",
-  PASSWORD: "password",
-  DB: "store",
+  HOST: dbCreds[process.env.NODE_ENV].host,
+  USER: dbCreds[process.env.NODE_ENV].username,
+  PASSWORD: dbCreds[process.env.NODE_ENV].password,
+  DB: dbCreds[process.env.NODE_ENV].database,
   dialect: "postgres",
   pool: {
     max: 5,

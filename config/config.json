@@ -2,23 +2,22 @@
   "development": {
     "username": "deploy",
     "password": "password",
-    "database": "store",
+    "database": "store_dev",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "deploy",
     "password": "password",
-    "database": "store",
+    "database": "store_test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
     "username": "deploy",
     "password": "password",
-    "database": "store",
+    "database": "store_prod",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }
 }
-

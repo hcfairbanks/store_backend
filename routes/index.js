@@ -11,7 +11,7 @@ let router = express.Router();
 
 router.get('/', (req, res, next) => {
   i18n.setLocale(returnLanguage(req.headers));
-  res.json({greeting: i18n.__("greeting.homepage")});
+  res.status(200).json({greeting: i18n.__("greeting.homepage")});
 });
 
 router.post("/login", users.login);

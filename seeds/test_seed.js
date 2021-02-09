@@ -1,6 +1,6 @@
 //const db = require("./models");
 
-import db from "./models";
+import db from "../models";
 
 const Role = db.role;
 const User = db.user;
@@ -77,7 +77,10 @@ const seed = async () => {
 }
 
 
-seed().then(()=>{
-  process.exit();
-})
+// seed().then(()=>{
+//   process.exit();
+// })
+
+export default seed
+
 
