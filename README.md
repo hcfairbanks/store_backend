@@ -143,3 +143,37 @@ https://blog.postman.com/extracting-data-from-responses-and-chaining-requests/
 Getting request url to check for domain or sub-domain
 https://stackoverflow.com/questions/10183291/how-to-get-the-full-url-in-express
 --------------------------------------------------------------------------------
+
+
+
+
+TESTS
+
+// run tests with 
+// yarn jest --forceExit
+// or 
+// yarn jest --runInBand
+// yarn test1
+// yarn test2
+
+
+// TODO
+// Setting up sequelize db for testing. Creates a user factory.
+// https://medium.com/riipen-engineering/testing-with-sequelize-cc51dafdfcf4
+
+// https://www.albertgao.xyz/2017/05/24/how-to-test-expressjs-with-jest-and-supertest/
+// https://www.npmjs.com/package/supertest
+// https://jestjs.io/docs/en/getting-started.html
+// https://medium.com/@pojotorshemi/integration-test-on-express-restful-apis-using-jest-and-supertest-4cf5d1414ab0
+// https://www.softwaretestinghelp.com/the-difference-between-unit-integration-and-functional-testing/
+// https://hackernoon.com/6-reasons-why-javascripts-async-await-blows-promises-away-tutorial-c7ec10518dd9
+// https://jestjs.io/docs/en/expect#expectarraycontainingarray
+// https://www.npmjs.com/package/supertest
+
+// For format of the requests being sent 
+// look at the supertest docs here
+// https://www.npmjs.com/package/supertest
+
+
+
+--------------------------------------------------------------------------------
