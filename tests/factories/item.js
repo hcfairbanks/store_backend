@@ -7,9 +7,9 @@ const data = async (props = {}) => {
   const defaultProps = {
     name: faker.name.firstName(),
     CategoryId: category.id,
-    description: faker.lorem.text(3),
-    price: faker.random.number(50),
-    quantity: faker.random.number(50)
+    description: faker.lorem.words(5),
+    price: faker.random.number(3),
+    quantity: faker.random.number(3)
   };
   return Object.assign({}, defaultProps, props);
 };

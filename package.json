@@ -7,8 +7,8 @@
     "dev": "NODE_ENV=development nodemon --exec babel-node app.js",
     "startTest": "nodemon app.js --watch server babel-node app.js --presets es2015",
     "start": "babel-node app.js --presets es2015",
-    "test1": "NODE_ENV=test npx sequelize-cli db:drop; NODE_ENV=test npx sequelize-cli db:create; NODE_ENV=test npx sequelize-cli db:migrate; yarn jest --forceExit",
-    "test2": "NODE_ENV=test npx sequelize-cli db:drop; NODE_ENV=test npx sequelize-cli db:create; NODE_ENV=test npx sequelize-cli db:migrate; yarn jest --runInBand",
+    "test1": "NODE_ENV=test npx sequelize-cli db:drop; NODE_ENV=test npx sequelize-cli db:create; NODE_ENV=test npx sequelize-cli db:migrate; yarn jest --forceExit --detectOpenHandles  --watchAll --maxWorkers=1",
+    "test2": "NODE_ENV=test npx sequelize-cli db:drop; NODE_ENV=test npx sequelize-cli db:create; NODE_ENV=test npx sequelize-cli db:migrate; yarn jest --runInBand --detectOpenHandles  --watchAll",
     "seed": "NODE_ENV=development babel-node seed"
   },
   "author": "",

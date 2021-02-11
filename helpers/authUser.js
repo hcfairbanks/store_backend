@@ -12,14 +12,14 @@ const authUser = (accessReq) => {
     i18n.setLocale(returnLanguage(req.headers))
     try {
       
-      console.log('*******************');
+      //console.log('*******************');
       // If I want to do permissions based on url or subdomain or something
       // In my etc/hosts file I have added the entry 'bigcats.cats'
       // This works in postman http://bigcats.cats:3000/categories
       var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-      console.log(fullUrl);
-      console.log("This output is being generated in git/store_backend/helpers/authUser.js");
-      console.log('*******************');
+      //console.log(fullUrl);
+      //console.log("This output is being generated in git/store_backend/helpers/authUser.js");
+      //console.log('*******************');
 
       // If jwt.verify doesn't return tru then an error get thrown
       // and the function returns the response in the catch
