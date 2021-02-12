@@ -49,7 +49,8 @@ exports.findByPk = async (req, res) => {
 
 exports.update = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
-  let role = await Role.findByPk(req.body["id"]);
+  //let role = await Role.findByPk(req.body["id"]);
+  let role = await Role.findByPk(req.params.id);
   if (role == null){
     res.json({message: i18n.__("roles.no_role_found")})
   } else{

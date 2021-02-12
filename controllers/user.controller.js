@@ -113,8 +113,10 @@ exports.findByPk = async (req, res) => {
 
 exports.update = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
-  if ( canAccessUser(req, req.body["id"]) ){
-    const user = await User.findByPk(req.body["id"]);
+  // if ( canAccessUser(req, req.body["id"]) ){
+  if ( canAccessUser(req, req.params.id) ){
+    // const user = await User.findByPk(req.body["id"]);
+    const user = await User.findByPk(req.params.id);
     if (user == null){
       res.status(404).json({message: i18n.__("users.no_user_found")})
     } else {
@@ -169,7 +171,7 @@ exports.delete = (req, res) => {
 exports.adminUserUpdate = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
   if ( isAdmin(req) ){
-    const user = await User.findByPk(req.body["id"]);
+    const user = await User.findByPk(req.params.id);
   if (user == null){
     res.status(404).json({message: i18n.__("users.no_user_found")})
   } else {
@@ -192,8 +194,8 @@ exports.adminUserUpdate = async (req, res) => {
 
 exports.updatePassword = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
-  if ( canAccessUser(req, req.body["id"]) ){
-    const user = await User.findByPk(req.body["id"]);
+  if ( canAccessUser(req, req.params.id) ){
+    const user = await User.findByPk(req.params.id);
   if (user == null){
     res.status(404).json({message: i18n.__("users.no_user_found")})
   } else {

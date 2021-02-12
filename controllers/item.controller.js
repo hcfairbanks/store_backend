@@ -59,7 +59,8 @@ exports.findByPk = async (req, res) => {
 exports.update = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
 
-  let item = await Item.findByPk(req.body["id"]);
+  //let item = await Item.findByPk(req.body["id"]);
+  let item = await Item.findByPk(req.params.id);
   if (item === null){
     res.status(500).json({message: i18n.__("items.no_item_found")});
     // res.status(200).json({message: i18n.__n('%s cat', 1)});

@@ -53,7 +53,8 @@ exports.findByPk = async (req, res) => {
 exports.update = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
 
-  let category = await Category.findByPk(req.body["id"]);
+  let category = await Category.findByPk(req.params.id);
+  //let category = await Category.findByPk(req.body["id"]);
   if (category == null){
     res.json({message: i18n.__("categories.no_category_found")})
   } else{

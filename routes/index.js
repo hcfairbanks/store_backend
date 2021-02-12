@@ -19,31 +19,31 @@ router.post("/login", users.login);
 // Categories
 router.post("/categories", authUser(["categories","create"]), categories.create);
 router.get("/categories", authUser(["categories","index"]), categories.findAll);
-router.patch("/categories", authUser(["categories","update"]), categories.update);
+router.patch("/categories/:id", authUser(["categories","update"]), categories.update);
 router.get("/categories/:id", authUser(["categories","show"]), categories.findByPk);
 router.delete("/categories/:id", authUser(["categories","delete"]), categories.delete);
 
 // Items
 router.post("/items", authUser(["items","create"]), items.create);
 router.get("/items", authUser(["items","index"]), items.findAll);
-router.patch("/items", authUser(["items","update"]), items.update);
+router.patch("/items/:id", authUser(["items","update"]), items.update);
 router.get("/items/:id", authUser(["items","show"]), items.findByPk);
 router.delete("/items/:id", authUser(["items","delete"]), items.delete);
 
 // Roles
 router.post("/roles", authUser(["roles","create"]), roles.create);
 router.get("/roles", authUser(["roles","index"]), roles.findAll);
-router.patch("/roles", authUser(["roles","update"]), roles.update);
+router.patch("/roles/:id", authUser(["roles","update"]), roles.update);
 router.get("/roles/:id", authUser(["roles","show"]), roles.findByPk);
 router.delete("/roles/:id", authUser(["roles","delete"]), roles.delete);
 
 // Users
 router.post("/users", authUser(["users","create"]), users.create);
 router.get("/users", authUser(["users","index"]), users.findAll);
-router.patch("/users",authUser(["users","update"]), users.update);
+router.patch("/users/:id",authUser(["users","update"]), users.update);
 router.get("/users/:id", authUser(["users","show"]), users.findByPk);
 router.delete("/users/:id", authUser(["users","delete"]), users.delete);
-router.patch("/adminUserUpdate",authUser(["users","adminUserUpdate"]), users.adminUserUpdate);
-router.patch("/usersUpdatePassword",authUser(["users","updatePassword"]), users.updatePassword);
+router.patch("/adminUserUpdate/:id",authUser(["users","adminUserUpdate"]), users.adminUserUpdate);
+router.patch("/usersUpdatePassword/:id",authUser(["users","updatePassword"]), users.updatePassword);
 
 export default router;
