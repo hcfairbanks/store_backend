@@ -39,11 +39,11 @@ exports.create =(req,res) => {
 
 exports.findByPk = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers))
-  const category = await Category.findByPk(req.params.id);
-  if (category == null){
+  const role = await Role.findByPk(req.params.id);
+  if (role == null){
     res.status(200).json({message: i18n.__("roles.no_role_found")})
   } else{
-    res.json(category)
+    res.json(role)
   }
 }; 
 

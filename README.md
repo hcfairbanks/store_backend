@@ -143,9 +143,12 @@ https://blog.postman.com/extracting-data-from-responses-and-chaining-requests/
 Getting request url to check for domain or sub-domain
 https://stackoverflow.com/questions/10183291/how-to-get-the-full-url-in-express
 --------------------------------------------------------------------------------
-
-
-
+Faker
+https://www.npmjs.com/package/faker
+--------------------------------------------------------------------------------
+Matchers
+https://jestjs.io/docs/en/expect#tomatchobjectobject
+--------------------------------------------------------------------------------
 
 TESTS
 

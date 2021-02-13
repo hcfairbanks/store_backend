@@ -1,13 +1,12 @@
 import "regenerator-runtime/runtime";
 import categoryFactory from "./factories/category"
-import itemFactory from "./factories/item"
+// import itemFactory from "./factories/item"
 import createAdminUser from "./factories/adminUser";
 import db from "../models";
 import faker from 'faker';
 import server from "../app";
 import truncate from "./truncate";
 import { i18n } from '../helpers/setLanguage.js'
-const Item = db.item;
 const Category = db.category;
 const request = require("supertest");
 let jwt = "";
@@ -29,86 +28,77 @@ afterAll( async () => {
 
 describe("Test the root path", () => {
 
-  test("Create Item", async () => {
-    const category = await categoryFactory();
-    const item = { name: faker.name.firstName(),
-                   description: "somethings",
-                   quantity: "50",
-                   price: "50",
-                   CategoryId: category.id
-                 }
+  test("Create Category", async () => {
     const response = await request(server)
-                            .post('/items')
-                            .send(item)
+                            .post('/categories')
+                            .send({
+                                    name: 'Winter Jackets'
+                                  })
                             .set('myLanguage', 'en')
                             .set('bearer',jwt);
-    expect(response.body.name).toBe(item.name);
+    expect(response.body.name).toBe('Winter Jackets');
     expect(response.statusCode).toBe(201);
-    await Item.destroy({ where: {}, force: true })
     await Category.destroy({ where: {}, force: true })
     server.close();
   });
 
-  test("Update Item", async () => {
-    const item = await itemFactory();
-    const newName = "bob" //faker.commerce.productName();
+  test("Update Category", async () => {
+    const category = await categoryFactory();
+    const newName = faker.commerce.productName();
     const response = await request(server)
-                            .patch(`/items/${item.id}`)
+                            .patch(`/categories/${category.id}`)
                             .send({
                                     name: newName
                                   })
                             .set('myLanguage', 'en')
                             .set('bearer',jwt);
-
-    expect(response.body.result.name).toBe(newName);
+    expect(response.body.name).toBe(newName);
     expect(response.statusCode).toBe(200);
-    expect(response.body.message).toBe(i18n.__("items.update_success"));
-    await Item.destroy({ where: {}, force: true })
     await Category.destroy({ where: {}, force: true })
     server.close();
   });
 
-  test("Show Item", async () => {
-    const item = await itemFactory();
+  test("Show Category", async () => {
+    const category = await categoryFactory();
     const response = await request(server)
-                            .get(`/items/${item.id}`)
+                            .get(`/categories/${category.id}`)
                             .set('myLanguage', 'en')
                             .set('bearer',jwt);
-    expect(response.body.name).toBe(item.name);
+    expect(response.body.name).toBe(category.name);
     expect(response.statusCode).toBe(200);
-    await Item.destroy({ where: {}, force: true })
     await Category.destroy({ where: {}, force: true })
     server.close();
   });
 
-  test("Delete Item", async () => {
-    const item = await itemFactory();
-    const totalItems = await Item.findAll()
-    expect(totalItems.length).toBe(1);
+  test("Delete Category", async () => {
+    const category = await categoryFactory();
+    const totalCategories = await Category.findAll()
+    expect(totalCategories.length).toBe(1);
     const response = await request(server)
-                            .delete(`/items/${item.id}`)
+                            .delete(`/categories/${category.id}`)
                             .set('myLanguage', 'en')
                             .set('bearer',jwt);
     expect(response.statusCode).toBe(200);
     expect(response.body.data).toEqual(expect.arrayContaining([]));
-    expect(response.body.message).toBe(i18n.__("items.delete_success"))
-    await Item.destroy({ where: {}, force: true })
+    expect(response.body.message).toBe(i18n.__("categories.delete_success"))
     await Category.destroy({ where: {}, force: true })
     server.close();
   });
 
-  test("Index Item", async () => {
-    const item1 = await itemFactory();
-    const item2 = await itemFactory();
-    const item3 = await itemFactory();
+  test("Index Category", async () => {
+    const categories = [
+      { name: faker.commerce.productName() },
+      { name: faker.commerce.productName() },
+      { name: faker.commerce.productName() }
+    ]
 
+    await Category.bulkCreate(categories)
     const response = await request(server)
-                            .get('/items')
+                            .get('/categories')
                             .set('myLanguage', 'en')
                             .set('bearer',jwt);
     expect(response.body.length).toBe(3);
     expect(response.statusCode).toBe(200);
-    await Item.destroy({ where: {}, force: true })
     await Category.destroy({ where: {}, force: true })
     server.close();
   });

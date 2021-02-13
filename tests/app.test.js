@@ -1,6 +1,4 @@
 import "regenerator-runtime/runtime";
-import categoryFactory from "./factories/category"
-import itemFactory from "./factories/item"
 import createAdminUser from "./factories/adminUser";
 import truncate from "./truncate";
 
@@ -55,15 +53,8 @@ describe("Test Users Login", () => {
                             .get('/users')
                             .set('myLanguage', 'en')
                             .set('bearer',jwt);
-    //  expect.arrayContaining('123')
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(1);
-    
-    // TODO 
-    // Turn these into their own seperate tests
-    const category1 = await categoryFactory();
-
-    const item = await itemFactory();
     server.close();
   });
 
