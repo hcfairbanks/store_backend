@@ -9,7 +9,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM,
+        values: ['admin', 'clerk', 'customer'],
         allowNull: false,
         unique: true
       },

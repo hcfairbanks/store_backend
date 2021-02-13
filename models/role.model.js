@@ -1,12 +1,9 @@
 module.exports = (dbConnection, Sequelize) => {
   const role = dbConnection.define("Role", {
     name: {
-      type: Sequelize.STRING,
+      type: Sequelize.ENUM,
       allowNull: false,
-      unique: {
-        args: 'uniqueKey',
-        msg: "roles.name_must_be_unique"
-      },
+      values: ['admin', 'clerk', 'customer'],
       validate: {
         notNull: {
             msg: 'roles.name_cannot_be_empty'

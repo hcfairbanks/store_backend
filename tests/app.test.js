@@ -23,7 +23,7 @@ afterAll( async () => {
   server.close();
 })
 
-describe("Test Users Login", () => {
+describe("Test publicliy available api", () => {
 
   test("Homepage should respond with 200", async () => {
     const response = await request(server)
@@ -48,15 +48,4 @@ describe("Test Users Login", () => {
     server.close();
   });
 
-  test("users Index", async () => {
-    const response = await request(server)
-                            .get('/users')
-                            .set('myLanguage', 'en')
-                            .set('bearer',jwt);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.length).toBe(1);
-    server.close();
-  });
-
-  
 });

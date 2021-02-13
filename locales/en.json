@@ -69,5 +69,10 @@
 		"denied": "Authorization Denied"
 	},
 	"email_must_be_unique": "here eng",
-	"name_cannot_be_empty": "name_cannot_be_empty"
+	"name_cannot_be_empty": "name_cannot_be_empty",
+	"User": {
+		"email cannot be null": "User.email cannot be null",
+		"RoleId cannot be null": "User.RoleId cannot be null"
+	},
+	"Password cannot be empty": "Password cannot be empty"
 }

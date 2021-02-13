@@ -55,6 +55,10 @@ exports.findAll = (req, res) => {
     });
 };
 
+// TODO
+// For general user create we need captia
+// and email verification
+
 exports.create =(req,res) => {
   i18n.setLocale(returnLanguage(req.headers))
   bcrypt.hash(req.body["password"], saltRounds, function (err, hash) {
@@ -66,7 +70,13 @@ exports.create =(req,res) => {
                   RoleId: req.body["RoleId"]
                 })
     .then(data =>{
-      res.status(200).json(data)
+      res.status(201).json({
+        id: data.id,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        RoleId: req.RoleId
+      })
     }).catch(error => {
       console.log(translateError(error));
       res.status(500).json({error: i18n.__(error.errors[0].message)});

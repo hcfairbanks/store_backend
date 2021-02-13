@@ -2,7 +2,6 @@ import "regenerator-runtime/runtime";
 import roleFactory from "./factories/role"
 import createAdminUser from "./factories/adminUser";
 import db from "../models";
-import faker from 'faker';
 import server from "../app";
 import truncate from "./truncate";
 import { i18n } from '../helpers/setLanguage.js'
@@ -29,7 +28,7 @@ afterAll( async () => {
 describe("Test the root path", () => {
 
   test("Create Role", async () => {
-    const role = { name: faker.name.firstName() }
+    const role = { name: 'clerk' }
     const response = await request(server)
                             .post('/roles')
                             .send(role)
@@ -42,8 +41,8 @@ describe("Test the root path", () => {
   });
 
   test("Update Role", async () => {
-    const role = await roleFactory();
-    const newName = faker.commerce.productName();
+    const role = await roleFactory('clerk');
+    const newName = 'customer';
     const response = await request(server)
                             .patch(`/roles/${role.id}`)
                             .send({
@@ -58,7 +57,7 @@ describe("Test the root path", () => {
   });
 
   test("Show Role", async () => {
-    const role = await roleFactory();
+    const role = await roleFactory('clerk');
     const response = await request(server)
                             .get(`/roles/${role.id}`)
                             .set('myLanguage', 'en')
@@ -70,7 +69,7 @@ describe("Test the root path", () => {
   });
 
   test("Delete Role", async () => {
-    const role = await roleFactory();
+    const role = await roleFactory('customer');
     const totalRoles = await Role.findAll()
     expect(totalRoles.length).toBe(2);
     const response = await request(server)

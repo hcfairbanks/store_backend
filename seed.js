@@ -1,5 +1,3 @@
-//const db = require("./models");
-
 import db from "./models";
 
 const Role = db.role;

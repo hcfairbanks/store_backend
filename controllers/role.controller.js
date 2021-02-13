@@ -28,7 +28,7 @@ exports.create =(req,res) => {
   }).catch(error => {
     res.status(400).json(
       {
-        errorMsg: i18n.__(error.errors[0].message),
+        //errorMsg: i18n.__(error.errors[0].message),
         error: error,
         requestBody: req.body,
         requestParams: req.params
