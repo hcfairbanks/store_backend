@@ -1,6 +1,6 @@
 import db from '../models';
+import i18n from '../helpers/setLanguage';
 import returnLanguage from '../helpers/returnLanguage';
-import { i18n } from '../helpers/setLanguage';
 
 const Item = db.item;
 const Category = db.category;

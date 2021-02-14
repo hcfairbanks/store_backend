@@ -1,10 +1,10 @@
 import "regenerator-runtime/runtime";
-import roleFactory from "./factories/role"
+import roleFactory from "./factories/role";
 import createAdminUser from "./factories/adminUser";
 import db from "../models";
+import i18n from '../helpers/setLanguage.js'
 import server from "../app";
 import truncate from "./truncate";
-import { i18n } from '../helpers/setLanguage.js'
 const Role = db.role;
 const request = require("supertest");
 let jwt = "";

@@ -6,7 +6,7 @@ import db from "../models";
 import faker from 'faker';
 import server from "../app";
 import truncate from "./truncate";
-import { i18n } from '../helpers/setLanguage.js'
+import i18n from '../helpers/setLanguage.js'
 const Category = db.category;
 const request = require("supertest");
 let jwt = "";

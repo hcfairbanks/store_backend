@@ -3,9 +3,9 @@ import createAdminUser from "./factories/adminUser";
 import createUser from "./factories/user";
 import db from "../models";
 import faker from 'faker';
+import i18n from '../helpers/setLanguage.js'
 import server from "../app";
 import truncate from "./truncate";
-import { i18n } from '../helpers/setLanguage.js'
 const Role = db.role;
 const User = db.user;
 const request = require("supertest");

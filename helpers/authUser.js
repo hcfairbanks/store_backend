@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
-import rolePermissions from '../config/rolePermissions';
-import { i18n } from './setLanguage';
+import i18n from './setLanguage';
 import returnLanguage from './returnLanguage';
-// import { translateError } from '../helpers/sequelizeTranslate';
+import rolePermissions from '../config/rolePermissions';
+// import translateError from '../helpers/sequelizeTranslate';
 
 const authUser = (accessReq) => (req, res, next) => {
   i18n.setLocale(returnLanguage(req.headers));

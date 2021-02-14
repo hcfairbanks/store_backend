@@ -1,9 +1,10 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import db from '../models';
+import i18n from '../helpers/setLanguage';
 import returnLanguage from '../helpers/returnLanguage';
-import { i18n } from '../helpers/setLanguage';
-// import { translateError } from '../helpers/sequelizeTranslate';
+
+// import translateError from '../helpers/sequelizeTranslate';
 
 const Role = db.role;
 const saltRounds = 10;
