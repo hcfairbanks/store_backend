@@ -66,6 +66,6 @@ const seed = async () => Role.bulkCreate(roles)
     },
   );
 
-seed().then(()=>{
+seed().then(() => {
   process.exit();
-})
+});

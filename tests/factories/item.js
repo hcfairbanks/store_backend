@@ -1,6 +1,6 @@
 import faker from 'faker';
 import db from '../../models';
-import categoryFactory from "./category"
+import categoryFactory from './category';
 
 const data = async (props = {}) => {
   const category = await categoryFactory();
@@ -9,10 +9,9 @@ const data = async (props = {}) => {
     CategoryId: category.id,
     description: faker.lorem.words(5),
     price: faker.random.number(3),
-    quantity: faker.random.number(3)
+    quantity: faker.random.number(3),
   };
-  return Object.assign({}, defaultProps, props);
+  return { ...defaultProps, ...props };
 };
 
-export default async (props = {}) =>
-  db.item.create(await data(props));
+export default async (props = {}) => db.item.create(await data(props));
