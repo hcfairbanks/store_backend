@@ -13,5 +13,19 @@
     "rules": {
         "no-underscore-dangle": "off",
         "no-console": "off"
-    }
+    },
+    "overrides": [
+        {
+          "files": [
+            "**/*.test.js"
+          ],
+          "env": {
+            "jest": true
+          },
+          "rules": {
+            "no-unused-vars": "off"
+        }
+        }
+      ]
 }
+
