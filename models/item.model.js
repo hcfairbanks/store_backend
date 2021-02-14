@@ -1,46 +1,48 @@
 module.exports = (dbConnection, Sequelize) => {
-  const item = dbConnection.define("Item", {
+  const item = dbConnection.define('Item', {
     name: {
       type: Sequelize.STRING,
       allowNull: false,
       unique: {
         args: 'uniqueKey',
-        msg: "items.name_must_be_unique"
+        msg: 'items.name_must_be_unique',
       },
       validate: {
         notNull: {
-            msg: 'items.name_cannot_be_empty'
+          msg: 'items.name_cannot_be_empty',
         },
         notEmpty: {
           args: true,
-          msg: 'items.name_cannot_be_empty'
-        }
-      }
+          msg: 'items.name_cannot_be_empty',
+        },
+      },
     },
     description: {
       type: Sequelize.STRING,
       allowNull: false,
       validate: {
         notNull: {
-            msg: 'items.description_cannot_be_empty'
+          msg: 'items.description_cannot_be_empty',
         },
         notEmpty: {
           args: true,
-          msg: 'items.description_cannot_be_empty'
-        }
-      }
+          msg: 'items.description_cannot_be_empty',
+        },
+      },
     },
     price: {
       type: Sequelize.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
     quantity: {
       type: Sequelize.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
-    CategoryId: { type: Sequelize.INTEGER,
+    CategoryId: {
+      type: Sequelize.INTEGER,
       references: { model: 'Categories', key: 'id' },
-      allowNull: false}
+      allowNull: false,
+    },
   });
 
   return item;
