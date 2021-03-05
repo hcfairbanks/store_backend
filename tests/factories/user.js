@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 import faker from 'faker';
 import db from '../../models';
 
@@ -9,8 +9,8 @@ const saltRounds = 10;
 const createUser = async (role) => {
   const userRole = await Role
     .findOrCreate({ where: { name: role }, defaults: { name: role } });
-  const salt = await bcrypt.genSaltSync(saltRounds);
-  const password = await bcrypt.hashSync('pa55w0rd', salt);
+  const salt = await bcryptjs.genSaltSync(saltRounds);
+  const password = await bcryptjs.hashSync('pa55w0rd', salt);
   const user = await User.create(
     {
       firstName: faker.name.firstName(),

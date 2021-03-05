@@ -180,3 +180,52 @@ TESTS
 
 
 --------------------------------------------------------------------------------
+// DOCKER
+
+# remove all stopped sontainers
+# sudo docker rm $(sudo docker ps -a -q)
+# sudo docker build --tag store_app_img:1.0 .
+# sudo docker run --name store_backend -p 3000:3000 -v /home/harry/git/store_backend/:/app -itd store_app_img
+
+
+################################################################################
+# These configurations on the host machine are needed to connect the
+# container to the docker host postgres database
+
+# sudo vi /etc/postgresql/11/main/pg_hba.conf
+# Add this line to the bottom
+# host     all             all             0.0.0.0/0               md5
+
+# sudo vi /etc/postgresql/11/main/postgresql.conf
+# change listen_addresses = 'localhost' 
+# to 
+# listen_addresses = '*' 
+
+# restart postgres server
+# /etc/init.d/postgresql restart
+--------------------------------------------------------------------------------
+# Postgres
+# Step by step - Run and Connect to SQL Server in Docker
+# https://www.youtube.com/watch?v=SJAl3vOX05M
+
+# Connect From Your Local Machine to a PostgreSQL Database in Docker
+# https://medium.com/better-programming/connect-from-local-machine-to-postgresql-docker-container-f785f00461a7
+
+--------------------------------------------------------------------------------
+# Kubernetes Tutorial for Beginners [FULL COURSE in 4 Hours]
+# Nov 6th 2020
+# https://www.youtube.com/watch?v=X48VuDVv0do&t=8269s
+--------------------------------------------------------------------------------
+# LOGGING
+
+# Logging Winston
+# https://www.youtube.com/watch?v=To9F0Xv3adk
+
+# Winston best practices
+# https://stackify.com/winston-logging-tutorial/
+
+# bunyan
+# https://www.youtube.com/watch?v=k-o9UoL-pQg
+# https://www.npmjs.com/package/bunyan
+
+--------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 // TODO Make this more dynamic
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 import db from '../../models';
 
 const Role = db.role;
@@ -8,8 +8,8 @@ const saltRounds = 10;
 
 const createAdminUser = async () => {
   const adminRole = await Role.create({ name: 'admin' });
-  const adminSalt = await bcrypt.genSaltSync(saltRounds);
-  const password = await bcrypt.hashSync('pa55w0rd', adminSalt);
+  const adminSalt = await bcryptjs.genSaltSync(saltRounds);
+  const password = await bcryptjs.hashSync('pa55w0rd', adminSalt);
   const adminUser = await User.create({
     firstName: 'admin',
     lastName: 'admin',

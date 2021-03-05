@@ -1,0 +1,40 @@
+version: '3.4'
+
+services:
+  store_backend_app:
+    image: store_backend_img:1.0
+    restart: on-failure
+    environment:
+      TOKEN_SECRET: 7bc78545b1a3923cc1e1e19523fd5c3f20b409509
+    ports:
+      - "3000:3000"
+    depends_on:
+      database_store_backend:
+        condition: service_healthy
+    command: bash -c "yarn setup_and_start"
+
+  database_store_backend:
+    image: kartoza/postgis:13.0
+    environment:
+      - POSTGRES_USER=deploy
+      - POSTGRES_PASS=password
+      - POSTGRES_DBNAME=store_dev
+      - ALLOW_IP_RANGE=0.0.0.0/0
+    tmpfs:
+     - /var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: on-failure
+    healthcheck:
+      test: "exit 0"
+
+  db-admin:
+    image: dpage/pgadmin4:latest
+    ports:
+      - 8081:8081
+    environment:
+      PGADMIN_LISTEN_PORT: 8081
+      PGADMIN_DEFAULT_EMAIL: deploy@test.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    depends_on:
+      - database_store_backend

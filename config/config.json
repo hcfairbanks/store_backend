@@ -3,21 +3,24 @@
     "username": "deploy",
     "password": "password",
     "database": "store_dev",
-    "host": "127.0.0.1",
+    "host": "192.168.2.16",
+    "port": "5432",
     "dialect": "postgres"
   },
   "test": {
     "username": "deploy",
     "password": "password",
     "database": "store_test",
-    "host": "127.0.0.1",
+    "host": "192.168.2.16",
+    "port": "5432",
     "dialect": "postgres"
   },
   "production": {
     "username": "deploy",
     "password": "password",
     "database": "store_prod",
-    "host": "127.0.0.1",
+    "host": "192.168.2.16",
+    "port": "5432",
     "dialect": "postgres"
   }
 }

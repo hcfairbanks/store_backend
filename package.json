@@ -6,16 +6,20 @@
   "scripts": {
     "dev": "NODE_ENV=development nodemon --exec babel-node app.js",
     "startTest": "nodemon app.js --watch server babel-node app.js --presets es2015",
+    "setup_and_start":"npx sequelize-cli db:migrate; NODE_ENV=development babel-node seed; NODE_ENV=development nodemon --exec babel-node app.js",
     "start": "babel-node app.js --presets es2015",
     "test1": "NODE_ENV=test npx sequelize-cli db:drop; NODE_ENV=test npx sequelize-cli db:create; NODE_ENV=test npx sequelize-cli db:migrate; yarn jest --forceExit --detectOpenHandles  --watchAll --maxWorkers=1",
     "test2": "NODE_ENV=test npx sequelize-cli db:drop; NODE_ENV=test npx sequelize-cli db:create; NODE_ENV=test npx sequelize-cli db:migrate; yarn jest --runInBand --detectOpenHandles  --watchAll",
+    "test3": "NODE_ENV=test npx sequelize-cli db:drop; NODE_ENV=test npx sequelize-cli db:create; NODE_ENV=test npx sequelize-cli db:migrate; yarn jest --forceExit --detectOpenHandles  --watchAll --maxWorkers=1 --coverage",
+    "test4": "NODE_ENV=test npx sequelize-cli db:drop; NODE_ENV=test npx sequelize-cli db:create; NODE_ENV=test npx sequelize-cli db:migrate; yarn jest --runInBand --detectOpenHandles  --watchAll --coverage",
     "seed": "NODE_ENV=development babel-node seed"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.0.0",
+    "bcryptjs": "2.4.3",
     "body-parser": "^1.19.0",
+    "bunyan": "^1.8.15",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -28,7 +32,8 @@
     "regenerator-runtime": "^0.13.7",
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
-    "supertest": "^6.0.1"
+    "supertest": "^6.0.1",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",

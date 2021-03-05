@@ -1,8 +1,9 @@
-import bcrypt from 'bcrypt';
+import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import db from '../models';
 import i18n from '../helpers/setLanguage';
 import returnLanguage from '../helpers/returnLanguage';
+import logger from '../helpers/logger';
 
 // import translateError from '../helpers/sequelizeTranslate';
 
@@ -59,7 +60,7 @@ exports.findAll = (req, res) => {
 // and email verification
 exports.create = (req, res) => {
   i18n.setLocale(returnLanguage(req.headers));
-  bcrypt.hash(req.body.password, saltRounds, (error, hash) => {
+   bcryptjs.hash(req.body.password, saltRounds, (error, hash) => {
     User.create(
       {
         firstName: req.body.firstName,
@@ -85,6 +86,9 @@ exports.create = (req, res) => {
 };
 
 exports.login = (req, res) => {
+  logger.info("/ query", { query: req.body });
+  // Winston Logger
+  //logger.info('What rolls down stairs');
   i18n.setLocale(returnLanguage(req.headers));
   User.findOne({
     include: [{ model: Role }],
@@ -93,7 +97,7 @@ exports.login = (req, res) => {
     if (!user) {
       res.status(301).redirect('/');
     } else {
-      bcrypt.compare(req.body.password, user.password, (error, result) => {
+      bcryptjs.compare(req.body.password, user.password, (error, result) => {
         if (result === true) {
           res.status(200).json(
             {
@@ -214,7 +218,7 @@ exports.updatePassword = async (req, res) => {
     } else {
       user.update(
         {
-          password: bcrypt.hashSync(req.body.password, saltRounds),
+          password: bcryptjs.hashSync(req.body.password, saltRounds),
         },
       )
         .then((result) => {
