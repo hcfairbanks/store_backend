@@ -12,7 +12,7 @@ exports.findAll = (req, res) => {
     })
     .catch((error) => {
       res.status(500).json(
-        { // Not sure I can predict what the error might be on a request to the index
+        {
           errorMsg: i18n.__('categories.error_retrieving_categories'),
           error,
           requestBody: req.body,
@@ -53,7 +53,6 @@ exports.findByPk = async (req, res) => {
 
 exports.update = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers));
-
   const category = await Category.findByPk(req.params.id);
   if (category == null) {
     res.json({ message: i18n.__('categories.no_category_found') });
@@ -69,7 +68,6 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers));
-
   const category = await Category.findByPk(req.params.id);
   if (category == null) {
     res.status(200).json({ message: i18n.__('categories.no_category_found') });

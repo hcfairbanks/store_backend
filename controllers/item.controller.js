@@ -13,7 +13,7 @@ exports.findAll = (req, res) => {
     })
     .catch((error) => {
       res.status(500).json(
-        { // Not sure I can predict what the error might be on a request to the index
+        {
           errorMsg: i18n.__('items.error_retrieving_items'),
           error,
           requestBody: req.body,
@@ -25,7 +25,6 @@ exports.findAll = (req, res) => {
 
 exports.create = (req, res) => {
   i18n.setLocale(returnLanguage(req.headers));
-
   Item.create({
     name: req.body.name,
     description: req.body.description,
@@ -38,7 +37,6 @@ exports.create = (req, res) => {
     }).catch((error) => {
       res.status(400).json(
         {
-          // errorMsg: i18n.__(error.errors[0].message),
           error,
           requestBody: req.body,
           requestParams: req.params,
@@ -49,7 +47,6 @@ exports.create = (req, res) => {
 
 exports.findByPk = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers));
-
   const item = await Item.findByPk(req.params.id);
   if (item === null) {
     res.json({ message: i18n.__('items.no_item_found') });
@@ -60,12 +57,9 @@ exports.findByPk = async (req, res) => {
 
 exports.update = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers));
-
-  // const item = await Item.findByPk(req.body["id"]);
   const item = await Item.findByPk(req.params.id);
   if (item === null) {
     res.status(500).json({ message: i18n.__('items.no_item_found') });
-    // res.status(200).json({message: i18n.__n('%s cat', 1)});
   } else {
     item.update({
       name: req.body.name,
@@ -80,10 +74,8 @@ exports.update = async (req, res) => {
           result,
         });
       }).catch((error) => {
-        // res.status(500).json(error);
         res.status(500).json(
-          { // TODO fix this, might happen when I add validation
-            // errorMsg: i18n.__(error.errors[0].message),
+          {
             error,
             requestBody: req.body,
             requestParams: req.params,
@@ -95,7 +87,6 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers));
-
   const item = await Item.findByPk(req.params.id);
   if (item == null) {
     res.json({ message: i18n.__('items.no_item_found') });
@@ -104,9 +95,8 @@ exports.delete = async (req, res) => {
       .then((data) => {
         res.status(200).json({ message: i18n.__('items.delete_success'), data });
       }).catch((error) => {
-        // res.status(500).json(error);
         res.status(500).json(
-          { // Not sure I can predict what the error might be on a request to the index
+          {
             errorMsg: i18n.__(error.errors[0].message),
             error,
             requestBody: req.body,

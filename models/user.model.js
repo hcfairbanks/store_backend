@@ -1,5 +1,3 @@
-// composite unique index keys with custom messages could be an issue
-// https://github.com/sequelize/sequelize/issues/5033
 const Sequelize = require('sequelize');
 const dbConfig = require('../config/db.config');
 
@@ -15,7 +13,6 @@ const dbConnection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD
 });
 
 const Role = require('./role.model')(dbConnection, Sequelize);
-// Not sure if I can add unique translated message here or not
 module.exports = () => {
   const user = dbConnection.define('User', {
     firstName: {
@@ -25,9 +22,6 @@ module.exports = () => {
         notNull: {
           msg: 'First name cannot be empty',
         },
-        // This isn't working because Bcrypt is entring in something when it's null
-        // Needs to be stopped by the controller too
-        // Look here for pw validations => https://sequelize.org/master/manual/validations-and-constraints.html
         notEmpty: {
           args: true,
           msg: 'First name cannot be empty',
@@ -50,9 +44,6 @@ module.exports = () => {
         notNull: {
           msg: 'Password cannot be empty',
         },
-        // This isn't working because Bcrypt is entring in something when it's null
-        // Needs to be stopped by the controller too
-        // Look here for pw validations => https://sequelize.org/master/manual/validations-and-constraints.html
         notEmpty: {
           args: true,
           msg: 'Password cannot be empty',

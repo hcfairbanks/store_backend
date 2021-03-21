@@ -12,7 +12,7 @@ exports.findAll = (req, res) => {
     })
     .catch((error) => {
       res.status(500).json(
-        { // Not sure I can predict what the error might be on a request to the index
+        {
           errorMsg: i18n.__('roles.error_retrieving_roles'),
           error,
           requestBody: req.body,
@@ -30,7 +30,6 @@ exports.create = (req, res) => {
     }).catch((error) => {
       res.status(400).json(
         {
-          // errorMsg: i18n.__(error.errors[0].message),
           error,
           requestBody: req.body,
           requestParams: req.params,
@@ -51,7 +50,6 @@ exports.findByPk = async (req, res) => {
 
 exports.update = async (req, res) => {
   i18n.setLocale(returnLanguage(req.headers));
-  // let role = await Role.findByPk(req.body["id"]);
   const role = await Role.findByPk(req.params.id);
   if (role == null) {
     res.json({ message: i18n.__('roles.no_role_found') });

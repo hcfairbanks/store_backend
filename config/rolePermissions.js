@@ -75,10 +75,3 @@ const rolePermissions = {
 };
 
 export default rolePermissions;
-
-// this could also be done like this
-// export default {
-//   'admin': { 'items':['index','show','create','update']},
-//   'clerk': { 'items':['index','show','create','update']},
-//   'customer': { 'items':['index','show']}
-// };

@@ -5,8 +5,6 @@ import i18n from '../helpers/setLanguage';
 import returnLanguage from '../helpers/returnLanguage';
 import logger from '../helpers/logger';
 
-// import translateError from '../helpers/sequelizeTranslate';
-
 const Role = db.role;
 const saltRounds = 10;
 const User = db.user;
@@ -26,14 +24,6 @@ function isAdmin(req) {
 }
 
 function generateAccessToken(user) {
-  // The uppercase seems weird here but the only way I could get squeezle to
-  // find the Role on the show was to include it like this
-  // console.log(user.Role.name);
-
-  // TODO START HERE, need this relationship working
-  // console.log(user.role)
-  // expires after half and hour (1800 seconds = 30 minutes)
-  // return jwt.sign(username, process.env.TOKEN_SECRET, { "expiresIn": 1000 });
   return jwt.sign({
     email: user.email,
     role: user.Role.name,
@@ -41,11 +31,19 @@ function generateAccessToken(user) {
   }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
 }
 
-exports.findAll = (req, res) => {
+function scrubPasswords(userData) {
+  for (var i in userData) {
+    userData[i]['password'] = "**********";
+  }
+  return userData[i];
+}
+
+exports.findAll =  (req, res) => {
   i18n.setLocale(returnLanguage(req.headers));
   User.findAll({ include: [{ model: Role }] })
     .then((data) => {
-      res.status(200).json(data);
+      const scrubedData = scrubPasswords(data); 
+      res.status(200).json(scrubedData);
     })
     .catch((error) => {
       res.status(500).json({
@@ -55,9 +53,6 @@ exports.findAll = (req, res) => {
     });
 };
 
-// TODO
-// For general user create we need captia
-// and email verification
 exports.create = (req, res) => {
   i18n.setLocale(returnLanguage(req.headers));
    bcryptjs.hash(req.body.password, saltRounds, (error, hash) => {
@@ -79,16 +74,13 @@ exports.create = (req, res) => {
           RoleId: req.RoleId,
         });
       }).catch((err) => {
-        // console.log(translateError(err));
         res.status(500).json({ error: i18n.__(err.errors[0].message) });
       });
   });
 };
 
 exports.login = (req, res) => {
-  logger.info("/ query", { query: req.body });
-  // Winston Logger
-  //logger.info('What rolls down stairs');
+  // logger.info("/ query", { query: req.body });
   i18n.setLocale(returnLanguage(req.headers));
   User.findOne({
     include: [{ model: Role }],
@@ -121,6 +113,7 @@ exports.findByPk = async (req, res) => {
     if (user === null) {
       res.status(404).json({ message: i18n.__('users.no_user_found') });
     } else {
+      user.password = "**********";
       res.status(200).json(user);
     }
   } else {
